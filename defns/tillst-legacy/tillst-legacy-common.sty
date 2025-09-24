@@ -1,0 +1,28 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tillst-legacy-common}[\texttt{TILLST} Legacy Definitions: Common]
+
+\RequirePackage{xparse}
+
+%% Convenient macros for defining names of judgments
+\newcommand{\RIntroOf}[1]{\ensuremath{#1}-I}
+\newcommand{\RIntroIOf}[2]{\ensuremath{#2}-I\ensuremath{_{#1}}}
+\newcommand{\RElimOf}[1]{\ensuremath{#1}-E}
+\newcommand{\RElimIOf}[2]{\ensuremath{#2}-E\ensuremath{_{#1}}}
+\newcommand{\RDynOf}[1]{D-\ensuremath{#1}}
+\newcommand{\RDynIOf}[2]{D\ensuremath{_{#1}}-\ensuremath{#2}}
+\newcommand{\RValOf}[1]{Val-\ensuremath{#1}}
+\newcommand{\RValIOf}[2]{Val\ensuremath{_{#1}}-\ensuremath{#2}}
+
+%% Different kinds of stepping
+\newcommand{\DStepsTo}[1][]{\xMapsto[\,#1\,]{\hspace*{1em}}}
+\newcommand{\UDStepsTo}[1]{\xMapsto{\,#1\,}}
+\newcommand{\LDStepsTo}[1]{\xMapsto[\,#1\,]{\hspace*{1em}}}
+\newcommand{\LLDStepsTo}[2]{\xMapsto[\,#2\,]{\,#1\,}}
+\newcommand{\MultiLLDStepsTo}[2]{{\xMapsto[\,#2\,]{\,#1\,}}^{\ast}}
+
+%% Definitions for misc metatheories
+\DeclareDocumentCommand{\FV}{m}{\ensuremath{\mathsf{FV}(#1)}}
+\DeclareDocumentCommand{\Set}{m}{\{{#1}\}}
+\DeclareDocumentCommand{\SetCmp}{m m}{\{{#1}\mid{#2}\}}
+\NewDocumentCommand{\Rel}{m m}{\mathcal{R}({#1};{#2})}
+\NewDocumentCommand{\Dom}{m}{\mathsf{Dom}(#1)}

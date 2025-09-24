@@ -1,0 +1,55 @@
+\documentclass[10pt]{article}
+% \documentclass[10pt]{acmart}
+
+% The base includes the following packages
+% \usepackage{pfpl-defns-base}
+% \usepackage{pfpl-defns-generic}
+% \usepackage{pfpl-defns-syn}
+% \usepackage{pfpl-defns-jdg}
+% \usepackage{pfpl-defns-ts}
+% \usepackage{pfpl-defns-lang}
+
+% Language specific definitions
+\usepackage{pfpl-defns}
+
+\title{\texttt{pfpl-defns} Test Document}%
+\author{Yue Yao}
+\date{\today}
+
+\begin{document}
+\maketitle{}
+
+This document tests the (deprecated) \texttt{pfpl-defns} package, originally authored by Robert Harper. 
+I adjusted the necessary definitions so that it can be imported as a family of packages. 
+
+\section{List of packages}
+
+The following packages constitute the base packages.
+
+\begin{description}
+    \item[\texttt{pfpl-defns-generic}] 
+    Parameters of the \texttt{pfpl-defns}, required by most packages;
+    generic definitions of the \texttt{pfpl-defns}, 
+    required by most packages. Contains definitions for common syntax pieces. 
+    % \emph{E.g.} $\bnfdef$.
+
+    \item[\texttt{pfpl-defns-syn}] Syntax and ABT definitions.
+
+    \item[\texttt{pfpl-defns-jdg}] Common judgments. \emph{E.g.} typing $\IsOf{M}{\tau}$, $\IsOfKd{M}{k}$, 
+    value judgment $\IsVal{e}$, machine well-formed-ness $\IsOK{M}$ and symbol typing $\HasSym{a}{\tau}$.
+    
+    \item[\texttt{pfpl-defns-ts}] Transition system. \emph{E.g.} $M \StepsTo{} M'$.
+
+    \item[\texttt{pfpl-defns-lang}] Names of Languages. \emph{E.g.} $\LangPCF$ and $\LangT$.
+\end{description}
+    
+The following incomplete list of packages extends the base with different language constructs
+
+
+\begin{description}
+    \item[\texttt{pfpl-defns-prod}] Syntax for products. \emph{E.g.} types $\prodtyabt{A}{B}$, $\prodtycst{A}{B}$, 
+    former $\pairexcst{M}{N}$, projections $\fstexcst{M}$ and $\sndexcst{M}$.
+\end{description}
+
+
+\end{document}

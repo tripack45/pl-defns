@@ -1,0 +1,255 @@
+\makeatletter
+
+%% Session types
+\DeclareDocumentCommand{\STypeSort}{}{\sort{Ses Typ}}
+
+% Simplified, binder free
+% \DeclareDocumentCommand{\tpunitstyabt}{ m }{\Opn{unit}\cdsqbracks{#1}}
+% \DeclareDocumentCommand{\tpunitstycst}{ m }{\ensuremath{\mathbf{1}^{#1}}}
+% \DeclareDocumentCommand{\tplarrstyabt}{ m m m }{\Abt{\Opn{larr}\cdsqbracks{#1}}{#2\mathbin{;} #3}}
+% \DeclareDocumentCommand{\tplarrstycst}{ m m m }{{#2}\mathrel{\multimap^{#1}}{#3}}
+% \DeclareDocumentCommand{\tptensorstyabt}{ m m m }{\Abt{\Opn{tensor}\cdsqbracks{#1}}{#2\mathbin{;} #3}}
+% \DeclareDocumentCommand{\tptensorstycst}{ m m m }{{#2}\mathrel{\otimes^{#1}}{#3}}
+% \DeclareDocumentCommand{\tpsumstyabt}{ m m m }{\Abt{\Opn{ichoice}\cdsqbracks{#1}}{{#2}\mathbin{;} {#3}}}
+% \DeclareDocumentCommand{\tpsumstycst}{ m m m }{{#2}\mathrel{\oplus^{#1}}{#3}}
+% \DeclareDocumentCommand{\tpwithstyabt}{ m m m }{\Abt{\Opn{with}\cdsqbracks{#1}}{{#2}\mathbin{;} {#3}}}
+% \DeclareDocumentCommand{\tpwithstycst}{ m m m }{{#2}\mathrel{{\&}^{#1}}{#3}}
+
+%% Frames
+\DeclareDocumentCommand{\fshiftabt}{ m m }{\Abt{\Opn{shift}}\parens{{#1}\mathbin{;} {#2}}}
+\DeclareDocumentCommand{\fshiftcst}{ m m }{{#1} + {#2}}
+\DeclareDocumentCommand{\fShift}{s m m}{\IfBooleanTF{#1}{\fshiftcst{#2}{#3}}{\fshiftabt{#2}{#3}}}
+\DeclareDocumentCommand{\finitabt}{ }{\Opn{init}}
+\DeclareDocumentCommand{\finitcst}{ }{\Opn{init}}
+\DeclareDocumentCommand{\fInit}{s}{\IfBooleanTF{#1}{\finitcst}{\finitabt}}
+
+%% Durations
+\DeclareDocumentCommand{\dzeroabt}{ }{\Opn{dz}}
+\DeclareDocumentCommand{\dzerocst}{ }{\bar{0}}
+\DeclareDocumentCommand{\dZero}{s}{\IfBooleanTF{#1}{\dzerocst}{\dzeroabt}}
+\DeclareDocumentCommand{\dunitabt}{ }{\Opn{dunit}}
+\DeclareDocumentCommand{\dunitcst}{ }{\bar{1}}
+\DeclareDocumentCommand{\dUnit}{s}{\IfBooleanTF{#1}{\dunitcst}{\dunitabt}}
+\DeclareDocumentCommand{\dsumabt}{ m m }{\Abt{\Opn{sum}}\parens{{#1}\mathbin{;} {#2}}}
+\DeclareDocumentCommand{\dsumcst}{ m m }{{#1} + {#2}}
+\DeclareDocumentCommand{\dSum}{s m m}{\IfBooleanTF{#1}{\dsumcst{#2}{#3}}{\dsumabt{#2}{#3}}}
+\DeclareDocumentCommand{\ddiffabt}{ m m }{\Abt{\Opn{diff}}\parens{{#1}\mathbin{;} {#2}}}
+\DeclareDocumentCommand{\ddiffcst}{ m m }{{#1} - {#2}}
+\DeclareDocumentCommand{\dDiff}{s m m}{\IfBooleanTF{#1}{\ddiffcst{#2}{#3}}{\ddiffabt{#2}{#3}}}
+%% Negative shift can be constructioned by taking difference of points in time
+
+%% Conditions
+\DeclareDocumentCommand{\ctrivabt}{ }{\Opn{tt}}
+\DeclareDocumentCommand{\ctrivcst}{ }{\star}
+\DeclareDocumentCommand{\cTriv}{s}{\IfBooleanTF{#1}{\ctrivcst}{\ctrivabt}}
+\DeclareDocumentCommand{\cequabt}{ m }{\Abt{\Opn{equ}}\parens{#1}}
+\DeclareDocumentCommand{\cequcst}{ m }{\cdot={#1}}
+\DeclareDocumentCommand{\cEqu}{s m}{\IfBooleanTF{#1}{\cequcst{#2}}{\cequabt{#2}}}
+\DeclareDocumentCommand{\cleqabt}{ m }{\Abt{\Opn{leq}}\parens{#1}}
+\DeclareDocumentCommand{\cleqcst}{ m }{\cdot\leq{#1}}
+\DeclareDocumentCommand{\cLeq}{s m}{\IfBooleanTF{#1}{\cleqcst{#2}}{\cleqabt{#2}}}
+\DeclareDocumentCommand{\cgeqabt}{ m }{\Abt{\Opn{geq}}\parens{#1}}
+\DeclareDocumentCommand{\cgeqcst}{ m }{\cdot\geq{#1}}
+\DeclareDocumentCommand{\cGeq}{s m}{\IfBooleanTF{#1}{\cgeqcst{#2}}{\cgeqabt{#2}}}
+\DeclareDocumentCommand{\cltabt}{ m }{\Abt{\Opn{lt}}\parens{#1}}
+\DeclareDocumentCommand{\cltcst}{ m }{\cdot{<}{#1}}
+\DeclareDocumentCommand{\cLt}{s m}{\IfBooleanTF{#1}{\cltcst{#2}}{\cltabt{#2}}}
+\DeclareDocumentCommand{\cgtabt}{ m }{\Abt{\Opn{gt}}{#1}}
+\DeclareDocumentCommand{\cgtcst}{ m }{\cdot{>}{#1}}
+\DeclareDocumentCommand{\cGt}{s m}{\IfBooleanTF{#1}{\cgtcst{#2}}{\cgtabt{#2}}}
+\DeclareDocumentCommand{\clandabt}{ m m }{\Abt{\Opn{and}}\parens{{#1}\mathbin{;} {#2}}}
+\DeclareDocumentCommand{\clandcst}{ m m }{#1\wedge #2}
+\DeclareDocumentCommand{\cLand}{s m m}{\IfBooleanTF{#1}{\clandcst{#2}{#3}}{\clandabt{#2}{#3}}}
+\DeclareDocumentCommand{\clorabt}{ m m }{\Abt{\Opn{and}}\parens{{#1}\mathbin{;} {#2}}}
+\DeclareDocumentCommand{\clorcst}{ m m }{#1\vee #2}
+\DeclareDocumentCommand{\cLor}{s m m}{\IfBooleanTF{#1}{\clorcst{#2}{#3}}{\clorabt{#2}{#3}}}
+
+%% Temporal Session Types
+\DeclareDocumentCommand{\tpunitstyabt}{ m m }{\Opn{unit}\cdsqbracks{\Abs(#1){#2}}}
+\DeclareDocumentCommand{\tpunitstycst}{ m m }{\ensuremath{\mathbf{1}^{\Abs(#1){#2}}}}
+\DeclareDocumentCommand{\tpUnitSty}{s m m}{\IfBooleanTF{#1}{\tpunitstycst{#2}{#3}}{\tpunitstyabt{#2}{#3}}}
+\DeclareDocumentCommand{\tplarrstyabt}{ m m m m }{\Abt{\Opn{larr}\cdsqbracks{\Abs(#1){#2}}}{\Abs(#1){#3}\mathbin{;} \Abs(#1){#4}}}
+\DeclareDocumentCommand{\tplarrstycst}{ m m m m }{{#3}\mathrel{\multimap^{\Abs(#1){#2}}}{#4}}
+\DeclareDocumentCommand{\tpLarrSty}{s m m m m}{\IfBooleanTF{#1}{\tplarrstycst{#2}{#3}{#4}{#5}}{\tplarrstyabt{#2}{#3}{#4}{#5}}}
+\DeclareDocumentCommand{\tptensorstyabt}{ m m m m }{\Abt{\Opn{tensor}\cdsqbracks{\Abs(#1){#2}}}{\Abs(#1){#3}\mathbin{;} \Abs(#1){#4}}}
+\DeclareDocumentCommand{\tptensorstycst}{ m m m m }{{#3}\mathrel{\otimes^{\Abs(#1){#2}}}{#4}}
+\DeclareDocumentCommand{\tpTensorSty}{s m m m m}{\IfBooleanTF{#1}{\tptensorstycst{#2}{#3}{#4}{#5}}{\tptensorstyabt{#2}{#3}{#4}{#5}}}
+\DeclareDocumentCommand{\tpsumstyabt}{ m m m m }{\Abt{\Opn{ichoice}\cdsqbracks{\Abs(#1){#2}}}{\Abs(#1){#3}\mathbin{;} \Abs(#1){#4}}}
+\DeclareDocumentCommand{\tpsumstycst}{ m m m m }{{#3}\mathrel{\oplus^{\Abs(#1){#2}}}{#4}}
+\DeclareDocumentCommand{\tpSumSty}{s m m m m}{\IfBooleanTF{#1}{\tpsumstycst{#2}{#3}{#4}{#5}}{\tpsumstyabt{#2}{#3}{#4}{#5}}}
+\DeclareDocumentCommand{\tpwithstyabt}{ m m m m }{\Abt{\Opn{with}\cdsqbracks{\Abs(#1){#2}}}{\Abs(#1){#3}\mathbin{;} \Abs(#1){#4}}}
+\DeclareDocumentCommand{\tpwithstycst}{ m m m m }{{#3}\mathrel{{\&}^{\Abs(#1){#2}}}{#4}}
+\DeclareDocumentCommand{\tpWithSty}{s m m m m}{\IfBooleanTF{#1}{\tpwithstycst{#2}{#3}{#4}{#5}}{\tpwithstyabt{#2}{#3}{#4}{#5}}}
+
+%% Two functional ones
+\DeclareDocumentCommand{\tpbangstycst}{ m m m m }{{\,!\,}_{#3}^{\Abs(#1){#2}}.\,{#4}}
+\DeclareDocumentCommand{\tpquerystycst}{ m m m m }{{\,?\,}_{#3}^{\Abs(#1){#2}}.\,{#4}}
+\DeclareDocumentCommand{\tpBangSty}{s m m m m}{\IfBooleanTF{#1}{\tpbangstycst{#2}{#3}{#4}{#5}}{\tpbangstycst{#2}{#3}{#4}{#5}}}
+\DeclareDocumentCommand{\tpQuerySty}{s m m m m}{\IfBooleanTF{#1}{\tpquerystycst{#2}{#3}{#4}{#5}}{\tpquerystycst{#2}{#3}{#4}{#5}}}
+
+%% Channels 
+
+\DeclareDocumentCommand{\ChanSort}{}{\sort{Chan}}
+
+%% Process terms
+\DeclareDocumentCommand{\ProcSort}{}{\sort{Proc}}
+
+%% Labels
+\DeclareDocumentCommand{\lblleft}{}{\Opn{left}}
+\DeclareDocumentCommand{\lblright}{}{\Opn{right}}
+
+% Utility
+\DeclareDocumentCommand{\when}{m}{\Opn{?}\minor@bracks{#1}}
+\DeclareDocumentCommand{\at}{m}{\Opn{@}\minor@bracks{#1}}
+\DeclareDocumentCommand{\bindValue}{m m}{{#1} \coloneqq #2}
+\DeclareDocumentCommand{\bindClose}{m}{\Opn{cls} \coloneqq #1}
+\DeclareDocumentCommand{\bindChannel}{m m}{#1 \coloneqq #2}
+\DeclareDocumentCommand{\bindSeq}{m m m}{(#1 \sep #2) \coloneqq #3}
+
+% Forward
+\DeclareDocumentCommand{\tpfwdabt}{ m m }{\Opn{fwd}^{#1}{#2}}
+\DeclareDocumentCommand{\tpfwdcst}{ m m }{\at{#1}\, \Opn{fwd}\parens{#2}}
+\DeclareDocumentCommand{\tpFwd}{s m m}{\IfBooleanTF{#1}{\tpfwdcst{#2}{#3}}{\tpfwdabt{#2}{#3}}}
+% Spawn proc 
+\DeclareDocumentCommand{\tpspawnproccst}{ m m m m }{\at{#1}\, \bindChannel{#3}{\Opn{spawn}\parens{#2} \mathbin{;} #4}}
+\DeclareDocumentCommand{\tpspawnprocabt}{ m m m m }{\Opn{spawn}^{#1}{#2}\mathbin{;} {\Abs(#3){#4}}}
+\DeclareDocumentCommand{\tpSpawnProc}{s m m m m}{\IfBooleanTF{#1}{\tpspawnproccst{#2}{#3}{#4}{#5}}{\tpspawnprocabt{#2}{#3}{#4}{#5}}}
+% Eval
+\DeclareDocumentCommand{\tpevalcst}{ m m m m }{\at{#2}\, \bindValue{#3}{\Opn{eval}\parens{#1}\mathbin{;} #4}}
+\DeclareDocumentCommand{\tpevalabt}{ m m m m }{\Opn{eval}^{#2}\parens{#1} \mathbin{;} \Abs(#3){#4}}
+\DeclareDocumentCommand{\tpEvalProc}{s m m m m}{\IfBooleanTF{#1}{\tpevalcst{#2}{#3}{#4}{#5}}{\tpevalabt{#2}{#3}{#4}{#5}}}
+% Provider of unit
+\DeclareDocumentCommand{\tpclosecst}{ m m }{\tpSndInt{#1}{\clsMsg}}
+\DeclareDocumentCommand{\tpcloseabt}{ m m }{\Opn{close}^{\Abs(#1){#2}}}
+\DeclareDocumentCommand{\tpClose}{s m m}{\IfBooleanTF{#1}{\tpclosecst{#2}{#3}}{\tpcloseabt{#2}{#3}}}
+% Client of unit
+\DeclareDocumentCommand{\tpwaitcst}{ m m m }{\tpRcvCli{#1}{#2}[#3]}
+\DeclareDocumentCommand{\tpwaitabt}{ m m m }{\Opn{wait}^{#1}{#2}\mathbin{;} {#3}}
+\DeclareDocumentCommand{\tpWait}{s m m m}{\IfBooleanTF{#1}{\tpwaitcst{#2}{#3}{#4}}{\tpwaitabt{#2}{#3}{#4}}}
+% Provider of loli
+\DeclareDocumentCommand{\tplarrrcvcst}{ m m m m m }{\tpRcvInt{#1}[#5]}
+\DeclareDocumentCommand{\tplarrrcvabt}{ m m m m m }{\lambda^{\Abs(#1){#2}}\parens{\isOf{#4}{#3}}{#5}}
+\DeclareDocumentCommand{\tpLarrRcv}{s m m m m m}{\IfBooleanTF{#1}{\tplarrrcvcst{#2}{#3}{#4}{#5}{#6}}{\tplarrrcvabt{#2}{#3}{#4}{#5}{#6}}}
+% Client of loli
+\DeclareDocumentCommand{\tplarrsndcst}{ m m m m }{\tpSndCli{#1}{#2}{#3}[#4]}
+\DeclareDocumentCommand{\tplarrsndabt}{ m m m m }{\Opn{app}^{#1}{#2}\,\parens{#3}\mathbin{;} {#4}}
+\DeclareDocumentCommand{\tpLarrSnd}{s m m m m}{\IfBooleanTF{#1}{\tplarrsndcst{#2}{#3}{#4}{#5}}{\tplarrsndabt{#2}{#3}{#4}{#5}}}
+% Provider of tensor
+\DeclareDocumentCommand{\tptensorsndcst}{ m m m m }{\tpSndInt{#1}{#3}[#4]}
+\DeclareDocumentCommand{\tptensorsndabt}{ m m m m }{{#3}\mathrel{\otimes^{\Abs(#1){#2}}}{#4}}
+\DeclareDocumentCommand{\tpTensorSnd}{s m m m m}{\IfBooleanTF{#1}{\tptensorsndcst{#2}{#3}{#4}{#5}}{\tptensorsndabt{#2}{#3}{#4}{#5}}}
+% Client of tensor
+\DeclareDocumentCommand{\tptensorrcvcst}{ m m m m }{\tpRcvCli{#2}{#1}[#4]}
+\DeclareDocumentCommand{\tptensorrcvabt}{ m m m m }{\Opn{split}^{#2}\,{#1}\mathbin{;} \Abs(#3){#4}}
+\DeclareDocumentCommand{\tpTensorRcv}{s m m m m}{\IfBooleanTF{#1}{\tptensorrcvcst{#2}{#3}{#4}{#5}}{\tptensorrcvabt{#2}{#3}{#4}{#5}}}
+% Provider of internal choice
+\DeclareDocumentCommand{\tpinlcst}{ m m m m m }{\tpSndInt{#1}{\leftMsg}[#5]}
+\DeclareDocumentCommand{\tpinrcst}{ m m m m m }{\tpSndInt{#1}{\rightMsg}[#5]}
+\DeclareDocumentCommand{\tpinlabt}{ m m m m m }{\Opn{switchL}^{\Abs(#1){#2}}\mathbin{;} {#5}}
+\DeclareDocumentCommand{\tpinrabt}{ m m m m m }{\Opn{switchR}^{\Abs(#1){#2}}\mathbin{;} {#5}}
+\DeclareDocumentCommand{\tpInL}{s m m m m m}{\IfBooleanTF{#1}{\tpinlcst{#2}{#3}{#4}{#5}{#6}}{\tpinlabt{#2}{#3}{#4}{#5}{#6}}}
+\DeclareDocumentCommand{\tpInR}{s m m m m m}{\IfBooleanTF{#1}{\tpinrcst{#2}{#3}{#4}{#5}{#6}}{\tpinrabt{#2}{#3}{#4}{#5}{#6}}}
+% Client of internal choice
+\DeclareDocumentCommand{\tpcasecst}{ m m m m }{\tpRcvCli{#1}{#2}[\caseCont{#3}{#4}]}
+\DeclareDocumentCommand{\tpcaseabt}{ m m m m }{\Opn{case}^{#1}\,{#2}\,\cdbraces{{#3} \mid {#4}}} %% Concise notation
+\DeclareDocumentCommand{\tpCase}{s m m m m}{\IfBooleanTF{#1}{\tpcasecst{#2}{#3}{#4}{#5}}{\tpcaseabt{#2}{#3}{#4}{#5}}}
+% Provider of external choice
+\DeclareDocumentCommand{\tpoffercst}{ m m m m }{\tpRcvInt{#1}[\caseCont{#3}{#4}]}
+\DeclareDocumentCommand{\tpofferabt}{ m m m m }{\Opn{offer}^{\Abs(#1){#2}}\,\cdbraces{{#3} \mid {#4}}}
+\DeclareDocumentCommand{\tpOffer}{s m m m m}{\IfBooleanTF{#1}{\tpoffercst{#2}{#3}{#4}{#5}}{\tpofferabt{#2}{#3}{#4}{#5}}}
+% Client of external choice
+\DeclareDocumentCommand{\tpselectlcst}{ m m m }{\tpSndCli{#2}{#1}{\leftMsg}[#3]}
+\DeclareDocumentCommand{\tpselectlabt}{ m m m }{\Opn{selL}^{#2}{#1}\mathbin{;} {#3}}
+\DeclareDocumentCommand{\tpselectrcst}{ m m m }{\tpSndCli{#2}{#1}{\rightMsg}[#3]}
+\DeclareDocumentCommand{\tpselectrabt}{ m m m }{\Opn{selR}^{#2}{#1}\mathbin{;} {#3}}
+\DeclareDocumentCommand{\tpSelectL}{s m m m}{\IfBooleanTF{#1}{\tpselectlcst{#2}{#3}{#4}}{\tpselectlabt{#2}{#3}{#4}}}
+\DeclareDocumentCommand{\tpSelectR}{s m m m}{\IfBooleanTF{#1}{\tpselectrcst{#2}{#3}{#4}}{\tpselectrabt{#2}{#3}{#4}}}
+% Bang and Receive of function values
+\DeclareDocumentCommand{\tpproduceproccst}{ m m m m }{\tpSndInt{#1}{\valMsg{#3}}[#4]}
+\DeclareDocumentCommand{\tpproduceprocabt}{ m m m m }{\Opn{produce}^{\Abs(#1){#2}}\,{#3}\mathbin{;} {#4}}
+\DeclareDocumentCommand{\tpProduceProc}{s m m m m}{\IfBooleanTF{#1}{\tpproduceproccst{#2}{#3}{#4}{#5}}{\tpproduceprocabt{#2}{#3}{#4}{#5}}}
+\DeclareDocumentCommand{\tpconsumeproccst}{ m m m m}{\tpRcvCli{#1}{#2}[#4]}
+\DeclareDocumentCommand{\tpconsumeprocabt}{ m m m m}{\Opn{consume}^{#1}\,{#2}\mathbin{;} \Abs(#3){#4}}
+\DeclareDocumentCommand{\tpConsumeProc}{s m m m m}{\IfBooleanTF{#1}{\tpconsumeproccst{#2}{#3}{#4}{#5}}{\tpconsumeprocabt{#2}{#3}{#4}{#5}}}
+\DeclareDocumentCommand{\tpqueryproccst}{ m m m m }{\tpRcvInt{#1}[#4]}
+\DeclareDocumentCommand{\tpqueryprocabt}{ m m m m }{\Opn{query}^{\Abs(#1){#2}}\mathbin{;} \Abs(#3){#4}}
+\DeclareDocumentCommand{\tpQueryProc}{s m m m m}{\IfBooleanTF{#1}{\tpqueryproccst{#2}{#3}{#4}{#5}}{\tpqueryprocabt{#2}{#3}{#4}{#5}}}
+\DeclareDocumentCommand{\tpsupplyproccst}{ m m m m }{\tpSndCli{#1}{#2}{\valMsg{#3}}[#4]}
+\DeclareDocumentCommand{\tpsupplyprocabt}{ m m m m }{\Opn{supply}^{#1}\,{#2}({#3})\mathbin{;} {#4}}
+\DeclareDocumentCommand{\tpSupplyProc}{s m m m m}{\IfBooleanTF{#1}{\tpsupplyproccst{#2}{#3}{#4}{#5}}{\tpsupplyprocabt{#2}{#3}{#4}{#5}}}
+
+
+%% Configurations
+
+
+
+
+\DeclareDocumentCommand{\actsndchanabt}{m m}{\Opn{sndCh}[{#1}]({#2})}
+\DeclareDocumentCommand{\actsndchancst}{m m}{\actsnd{#1}{#2}}
+\DeclareDocumentCommand{\actSndChan}{s m m}{\IfBooleanTF{#1}{\actsndchancst{#2}{#3}}{\actsndchanabt{#2}{#3}}}
+
+\DeclareDocumentCommand{\actrcvchanabt}{m m}{\Opn{rcvCh}[{#1}]({#2})}
+\DeclareDocumentCommand{\actrcvchancst}{m m}{\actrcv{#1}{#2}}
+\DeclareDocumentCommand{\actRcvChan}{s m m}{\IfBooleanTF{#1}{\actrcvchancst{#2}{#3}}{\actrcvchanabt{#2}{#3}}}
+
+\DeclareDocumentCommand{\actsndlblabt}{m m}{\Opn{sndlbl}[{#1}]({#2})}
+\DeclareDocumentCommand{\actsndlblcst}{m m}{\actsnd{#1}{#2}}
+\DeclareDocumentCommand{\actSndLbl}{s m m}{\IfBooleanTF{#1}{\actsndlblcst{#2}{#3}}{\actsndlblabt{#2}{#3}}}
+
+\DeclareDocumentCommand{\actrcvlblabt}{m m}{\Opn{rcvlbl}[{#1}]({#2})}
+\DeclareDocumentCommand{\actrcvlblcst}{m m}{\actrcv{#1}{#2}}
+\DeclareDocumentCommand{\actRcvLbl}{s m m}{\IfBooleanTF{#1}{\actrcvlblcst{#2}{#3}}{\actrcvlblabt{#2}{#3}}}
+
+\DeclareDocumentCommand{\actsndclosecst}{m}{\actsnd{#1}{\Opn{cls}}}
+\DeclareDocumentCommand{\actrcvclosecst}{m}{\actrcv{#1}{\Opn{cls}}}
+\DeclareDocumentCommand{\actsndvalcst}{m m}{\actsnd{#1}{\Opn{val}(#2)}}
+\DeclareDocumentCommand{\actrcvvalcst}{m m}{\actrcv{#1}{\Opn{val}(#2)}}
+
+
+
+% \DeclareDocumentCommand{\tunnelabt}{ m }{\Abt{\Opn{tunnel}}{#1}}
+% \DeclareDocumentCommand{\tunnelcst}{ m }{{\bullet_{#1}}}
+
+%% Statics
+\DeclareDocumentCommand{\TimeIsRight}{ m m }{\isOf{#1}{#2}}
+\DeclareDocumentCommand{\IsBefore}{ m m }{\TimeIsRight{#1}{\cleqcst{#2}}}
+\DeclareDocumentCommand{\IsFCtx}{ m }{\JPost{#1}{\jdg@Syn{FCtx}}}
+\DeclareDocumentCommand{\IsFrame}{ m }{\JPost{#1}{\jdg@Syn{Frame}}}
+\DeclareDocumentCommand{\IsFType}{ m }{\JPost{#1}{\jdg@Syn{Cond}}}
+\DeclareDocumentCommand{\IsSType}{ m }{\JPost{#1}{\jdg@Syn{SType}}}
+\DeclareDocumentCommand{\IsDuration}{ m }{\JPost{#1}{\jdg@Syn{Duration}}}
+\DeclareDocumentCommand{\IsTime}{ m }{\JPost{#1}{\jdg@Syn{Time}}}
+
+\DeclareDocumentCommand{\IsOfProc}{ m m m }{\isOfKd{{#1}\mathrel{@}{#2}}{#3}}
+\DeclareDocumentCommand{\IsOfConf}{ m m m }{\isOfKd{\ClockProc*{#1}, {#2}}{#3}}
+\DeclareDocumentCommand{\IsOfEvent}{ m m }{\isOfKd{#1}{#2}}
+
+\DeclareDocumentCommand{\Interp}{m}{\left\lceil{#1}\right\rceil}
+
+\DeclareDocumentCommand{\AddDur}{m m}{#1 + #2}
+
+%% Forward and Cut Compatibility
+\DeclareDocumentCommand{\FwdComp}{m m m}{{#1}\rtimes{#2}\mathrel{@}{#3}}
+\DeclareDocumentCommand{\CutComp}{m m m}{{#1}\ltimes{#2}\mathrel{@}{#3}}
+
+% \DeclareDocumentCommand{\EmptySig}{}{\varepsilon}
+% \DeclareDocumentCommand{\EmptySubconf}{}{\varepsilon}
+% \DeclareDocumentCommand{\EmptyCtx}{}{\cdot}
+% \DeclareDocumentCommand{\TSigma}{}{\tilde{\Sigma}}
+
+%% Dynamics
+% \DeclareDocumentCommand{\TimeIsRight}{ m m }{{#2}\parens{#1}\mathrel{\mathsf{IsRight}}}
+% \DeclareDocumentCommand{\runprocframed}{ m m m }{\Abs{\tilde{\nu}_{#1}}{{#2}\mathbin{\triangleleft}{#3}}}
+
+%% Schedules
+\DeclareDocumentCommand{\SchedStepsTo}{ m }{\DStepsTo[]{}}
+\DeclareDocumentCommand{\EdfStepsTo}{ }{\SchedStepsTo{\Opn{edf}}}
+
+\DeclareDocumentCommand{\ProcEarliest}{ m m m }{{#1}~\mathsf{earliest}~({#2}, {#3})}
+
+%% Recurrent
+
+\DeclareDocumentCommand{\ffam}{m m}{\Abt{#1}\parens{#2}}
+\DeclareDocumentCommand{\defCoindFam}{m m m}{\Abt{#1}\parens{#2} \coloneqq_{\Opn{CoInd}} {#3}}
+
+\makeatother

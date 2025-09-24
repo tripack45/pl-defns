@@ -1,0 +1,32 @@
+\makeatletter
+
+\DeclareDocumentCommand{\SeqFamily}{o m m}{\IfNoValueTF{#1}{\sigma}{#1}_{#2, #3}}
+\DeclareDocumentCommand{\TrajFamily}{o m m}{\IfNoValueTF{#1}{\bfw}{#1}_{#2, #3}}
+
+\DeclareDocumentCommand{\SubCompResult}{m m m}{#1 \mathrel{\triangleright_{#2}} #3}
+\DeclareDocumentCommand{\SubCompResultCont}{m m m m m}{\SubCompResult{#1}{#2}{#3}\@sep \Abs(#4){#5}}
+
+\DeclareDocumentCommand{\AbsBigStep}{o D<>{} m m m}{%
+\IfNoValueF{#1}{{#1}\mathbin{:}}{#3}% 
+\Downarrow_{#2}^{#4} {#5}}
+
+\DeclareDocumentCommand{\AbsBigStepMu}{o D<>{} m m m m m}{\AbsBigStep[#1]<#2>{\{{#3}\}{#4}}{#5}{\{{#6}\}{#7}}}%
+
+%% Overrides pl-syntax defaults
+%%
+\DeclareDocumentCommand{\refTy}{s m}{\A@bt{\O@pn{ref}}(#2)}
+
+\DeclareDocumentCommand{\getref@Abt}{m m}{\A@bt{\O@pn{get}}[#1](#2)}
+\DeclareDocumentCommand{\getref@Cst}{m}{\A@bt{\O@pn{get}}(#1)}
+\DeclareDocumentCommand{\getrefCmd}{s O{\tau} m}{\IfBooleanTF{#1}{\getref@Cst{#3}}{\getref@Abt{#2}{#3}}}
+
+\DeclareDocumentCommand{\setref@Abt}{m m m}{\A@bt{\O@pn{set}}[#1](#2\@sep  #3)}
+\DeclareDocumentCommand{\setref@Cst}{m m}{\A@bt{\O@pn{set}}(#1\@sep  #2)}
+\DeclareDocumentCommand{\setrefCmd}{s O{\tau} m m}{\IfBooleanTF{#1}{\setref@Cst{#3}{#4}}{\setref@Abt{#2}{#3}{#4}}}
+
+\DeclareDocumentCommand{\newrefCmd}{s O{\tau} m}{\IfBooleanTF{#1}{\A@bt{\O@pn{new}}[#2](#3)}{\A@bt{\O@pn{new}}[#2](#3)}}
+
+\DeclareDocumentCommand{\cell}{s m m}{\sing@map{#2}{#3}}
+\DeclareDocumentCommand{\extMap}{m m m}{#1, \cell{#2}{#3}}
+\makeatother
+

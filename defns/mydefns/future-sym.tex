@@ -1,0 +1,13 @@
+\makeatletter
+
+\NewDocumentCommand{\symFutTy}{ m m }{\A@bt{\O@pn{fut}}[#1](#2)}
+\NewDocumentCommand{\symFutEx}{ m }{\A@bt{\O@pn{fut}}(#1)}
+\NewDocumentCommand{\futRefEx}{ m }{\A@bt{\O@pn{fcell}}[#1]}
+\NewDocumentCommand{\futSynEx}{ m }{\A@bt{\O@pn{fsyn}}(#1)}
+\NewDocumentCommand{\eqSig}{o m m }{#2 \overset{\IfValueTF{#1}{#1}{\Sigma}}{=} #3}
+\RenewDocumentCommand{\extMap}{m m m}{{#1} \otimes \singMap{#2}{#3}}
+% \NewDocumentCommand{\LocStepsTo}{D<>{\hspace{.5pc}} D(){}}{\mathrel{\xmapsto[\hspace{.25pc}\textsf{loc}\hspace{.25pc}]{\hspace{.25pc}#1\hspace{.25pc}}^{#2}}}
+% \NewDocumentCommand{\GloStepsTo}{D<>{\hspace{.5pc}} D(){}}{\mathrel{\xmapsto[\hspace{.25pc}\textsf{glo}\hspace{.25pc}]{\hspace{.25pc}#1\hspace{.25pc}}^{#2}}}
+% \NewDocumentCommand{\HasSym}{o m m}{\IfValueTF{#1}{\JInfix{#2}{\twiddle^{#1}}{#3}}{\JInfix{#2}{\twiddle}{#3}} }
+
+\makeatother

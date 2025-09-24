@@ -1,0 +1,87 @@
+\makeatletter
+
+% \DeclareDocumentCommand{\StepReflOld}{m m}{\kw{refl}_{#1}^{#2}}
+% \DeclareDocumentCommand{\StepTOld}{m m m m}{\OpABT{\kw{stepT}_{{#1};{#2}}^{#3}}{#4}}
+% \DeclareDocumentCommand{\StepCOld}{m m m m}{\OpABT{\kw{stepC}_{{#1}}^{#2;#3}}{#4}}
+% \DeclareDocumentCommand{\TrjOld}{m}{\kw{C}_{#1}}
+% \DeclareDocumentCommand{\trjTrivOld}{m}{\kw{i}_{#1}}
+% \DeclareDocumentCommand{\trjConstOld}{m m}{\kw{c}_{#1}^{#2}}
+% \DeclareDocumentCommand{\computesOld}{m m}{{#1}\mathbin{\kw{computes}}{#2}}
+% \DeclareDocumentCommand{\computewlOld}{m}{\OpABT{\kw{w}}{#1}}
+% \DeclareDocumentCommand{\computewlsOld}{m}{\OpABT{\kw{s}}{#1}}
+% \DeclareDocumentCommand{\wlofOld}{m}{\pairexcst{\computewl{\_}}{#1}}
+% \DeclareDocumentCommand{\wlsofOld}{m}{\pairexcst{\computewls{\_}}{#1}}
+% \DeclareDocumentCommand{\trjExtOld}{m m m}{\kw{Ext}_{#1}^{#2}(#3)}
+% \DeclareDocumentCommand{\constcwlOld}{m m}{\Abt{\Opn{k}_{#1}}(#2)}
+
+\DeclareDocumentCommand{\StepRefl}{m m}{\Abt{\Opn{refl}}_{#1}^{#2}}
+\DeclareDocumentCommand{\StepT}{m m m m}{\Abt{\Opn{stepT}_{{#1}\sep {#2}}^{#3}}(#4)}
+\DeclareDocumentCommand{\StepC}{m m m m}{\Abt{\Opn{stepC}_{{#1}}^{#2\sep #3}}(#4)}
+\DeclareDocumentCommand{\IsProofOf}{m m}{#1 \, : \, #2}
+\DeclareDocumentCommand{\SequenceProof}{m m}{#1; \, #2}
+
+
+\DeclareDocumentCommand{\MStepRefl}{m m}{\Abt{\Opn{refl}}_{#1}^{#2}}
+\DeclareDocumentCommand{\MStepT}{m m m o}{
+\IfNoValueTF{#4}%
+{\Opn{stepT}_{{#1}\sep {#2}}^{#3}}%
+{\Abt{\Opn{stepT}_{{#1}\sep {#2}}^{#3}}(#4)}%
+}
+\DeclareDocumentCommand{\MStepC}{m m m o}{
+\IfNoValueTF{#4}%
+{\Opn{stepC}_{{#1}}^{#2\sep #3}}%
+{\Abt{\Opn{stepC}_{{#1}}^{#2\sep #3}}(#4)}%
+}
+    
+
+\DeclareDocumentCommand{\TInt}{m m}{\left[\,{#1},{#2}\,\right)}
+\DeclareDocumentCommand{\TIntInf}{m}{\left[\,{#1}, \infty\,\right)}
+
+\DeclareDocumentCommand{\Trj}{m}{\Opn{C}_{#1}}
+
+\DeclareDocumentCommand{\wl}{m}{\Trj{\TIntInf{#1}}}
+\DeclareDocumentCommand{\wls}{m m}{\Trj{\TInt{#1}{#2}}}
+
+\DeclareDocumentCommand{\trjTriv}{m}{\Opn{i}_{#1}}
+\DeclareDocumentCommand{\trjConst}{m m}{\Opn{c}_{#1}^{#2}}
+
+\DeclareDocumentCommand{\trjExt}{m m m}{\Opn{Ext}_{#1}^{#2}(#3)}
+
+\DeclareDocumentCommand{\trjCat}{m m}{{#1}\mathbin{@}{#2}}
+\DeclareDocumentCommand{\trjConc}{m m}{{#1}\otimes{#2}}
+
+\DeclareDocumentCommand{\wl}{m}{L_{#1}}
+\DeclareDocumentCommand{\cwl}{m m}{S_{\TIntInf{#1}}({#2})}
+\DeclareDocumentCommand{\cwls}{m m m m}{S_{\TInt{#1}{#2}}({#3; #4})}
+\DeclareDocumentCommand{\ctrjI}{m m m}{S_{#1}({#2; #3})}
+\DeclareDocumentCommand{\ctrj}{m m m m}{\ctrjI{\TInt{#1}{#2}}{#3}{#4}}
+
+\DeclareDocumentCommand{\computes}{m m}{{#1}\mathbin{\jdg@Syn{computes}}{#2}}
+
+\DeclareDocumentCommand{\computewl}{m}{\Abt{\Opn{w}}(#1)}
+\DeclareDocumentCommand{\computewls}{m}{\Abt{\Opn{s}}(#1)}
+
+\DeclareDocumentCommand{\wlof}{m}{\pairEx*{\computewl{\_}}{#1}}
+\DeclareDocumentCommand{\wlsof}{m}{\pairEx*{\computewls{\_}}{#1}}
+
+\DeclareDocumentCommand{\constcwl}{m m}{\Abt{\Opn{k}_{#1}}(#2)}
+
+\DeclareDocumentCommand{\concat}{m m}{{#1}\mathbin{@}{#2}}
+
+\DeclareDocumentCommand{\opconc}{ }{\otimes}
+\DeclareDocumentCommand{\conc}{m m}{{#1}\otimes{#2}}
+\DeclareDocumentCommand{\concfam}{m m}{\bigotimes_{#1}{#2}}
+
+\DeclareDocumentCommand{\ilfam}{m m}{\bigotimes_{#1}{#2}}
+\DeclareDocumentCommand{\il}{m m}{{#1}\otimes{#2}}
+\DeclareDocumentCommand{\cutoff}{m m}{{#1}\uparrow^{#2}}
+
+\DeclareDocumentCommand{\lpar}{m m}{{#1}\downarrow^{#2}}
+\DeclareDocumentCommand{\rpar}{m m}{{#1}\uparrow^{#2}}
+
+\DeclareDocumentCommand{\cwlequiv}{m m}{{#1}\sim{#2}}
+\DeclareDocumentCommand{\cwlequivt}{m m m}{{#2}\sim_{#1}{#3}}
+
+\DeclareDocumentCommand{\cwlext}{ m m }{{#1}\cdcoloncolon{#2}}
+
+\makeatother

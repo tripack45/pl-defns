@@ -1,0 +1,203 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tillst-legacy-timed}[\texttt{TILLST} Legacy Definitions: Timed Session Logic]
+
+\RequirePackage{xparse}
+
+%% Session types
+\DeclareDocumentCommand{\STypeSort}{}{\Sort{Ses Typ}}
+
+% Simplified, binder free
+% \DeclareDocumentCommand{\tpunitstyabt}{ m }{\kw{unit}\cdsqbracks{#1}}
+% \DeclareDocumentCommand{\tpunitstycst}{ m }{\ensuremath{\mathbf{1}^{#1}}}
+% \DeclareDocumentCommand{\tplarrstyabt}{ m m m }{\OpABT{\kw{larr}\cdsqbracks{#1}}{#2;#3}}
+% \DeclareDocumentCommand{\tplarrstycst}{ m m m }{{#2}\mathrel{\multimap^{#1}}{#3}}
+% \DeclareDocumentCommand{\tptensorstyabt}{ m m m }{\OpABT{\kw{tensor}\cdsqbracks{#1}}{#2;#3}}
+% \DeclareDocumentCommand{\tptensorstycst}{ m m m }{{#2}\mathrel{\otimes^{#1}}{#3}}
+% \DeclareDocumentCommand{\tpsumstyabt}{ m m m }{\OpABT{\kw{ichoice}\cdsqbracks{#1}}{{#2};{#3}}}
+% \DeclareDocumentCommand{\tpsumstycst}{ m m m }{{#2}\mathrel{\oplus^{#1}}{#3}}
+% \DeclareDocumentCommand{\tpwithstyabt}{ m m m }{\OpABT{\kw{with}\cdsqbracks{#1}}{{#2};{#3}}}
+% \DeclareDocumentCommand{\tpwithstycst}{ m m m }{{#2}\mathrel{{\&}^{#1}}{#3}}
+
+%% Frames
+\DeclareDocumentCommand{\fshiftabt}{ m m }{\OpABT{\kw{shift}}{{#1};{#2}}}
+\DeclareDocumentCommand{\fshiftcst}{ m m }{{#1} + {#2}}
+\DeclareDocumentCommand{\finitabt}{ }{\kw{init}}
+\DeclareDocumentCommand{\finitcst}{ }{\kw{init}}
+
+%% Durations
+\DeclareDocumentCommand{\dzeroabt}{ }{\kw{dz}}
+\DeclareDocumentCommand{\dzerocst}{ }{\bar{0}}
+\DeclareDocumentCommand{\dunitabt}{ }{\kw{dunit}}
+\DeclareDocumentCommand{\dunitcst}{ }{\bar{1}}
+\DeclareDocumentCommand{\dsumabt}{ m m }{\OpABT{\kw{sum}}{{#1};{#2}}}
+\DeclareDocumentCommand{\dsumcst}{ m m }{{#1} + {#2}}
+\DeclareDocumentCommand{\ddiffabt}{ m m }{\OpABT{\kw{diff}}{{#1};{#2}}}
+\DeclareDocumentCommand{\ddiffcst}{ m m }{{#1} - {#2}}
+%% Negative shift can be constructioned by taking difference of points in time
+
+%% Conditions
+\DeclareDocumentCommand{\ctrivabt}{ }{\kw{tt}}
+\DeclareDocumentCommand{\ctrivcst}{ }{\star}
+\DeclareDocumentCommand{\cequabt}{ m }{\OpABT{\kw{equ}}{#1}}
+\DeclareDocumentCommand{\cequcst}{ m }{\cdot={#1}}
+\DeclareDocumentCommand{\cleqabt}{ m }{\OpABT{\kw{leq}}{#1}}
+\DeclareDocumentCommand{\cleqcst}{ m }{\cdot\leq{#1}}
+\DeclareDocumentCommand{\cgeqabt}{ m }{\OpABT{\kw{geq}}{#1}}
+\DeclareDocumentCommand{\cgeqcst}{ m }{\cdot\geq{#1}}
+\DeclareDocumentCommand{\cltabt}{ m }{\OpABT{\kw{lt}}{#1}}
+\DeclareDocumentCommand{\cltcst}{ m }{\cdot{<}{#1}}
+\DeclareDocumentCommand{\cgtabt}{ m }{\OpABT{\kw{gt}}{#1}}
+\DeclareDocumentCommand{\cgtcst}{ m }{\cdot{>}{#1}}
+\DeclareDocumentCommand{\clandabt}{ m m }{\OpABT{\kw{and}}{{#1};{#2}}}
+\DeclareDocumentCommand{\clandcst}{ m m }{\landcst{#1}{#2}}
+\DeclareDocumentCommand{\clorabt}{ m m }{\OpABT{\kw{and}}{{#1};{#2}}}
+\DeclareDocumentCommand{\clorcst}{ m m }{\lorcst{#1}{#2}}
+
+%% Temporal Session Types
+\DeclareDocumentCommand{\tpunitstyabt}{ m m }{\kw{unit}\cdsqbracks{\AbsABT{#1}{#2}}}
+\DeclareDocumentCommand{\tpunitstycst}{ m m }{\ensuremath{\mathbf{1}^{\AbsABT{#1}{#2}}}}
+\DeclareDocumentCommand{\tplarrstyabt}{ m m m m }{\OpABT{\kw{larr}\cdsqbracks{\AbsABT{#1}{#2}}}{\AbsABT{#1}{#3};\AbsABT{#1}{#4}}}
+\DeclareDocumentCommand{\tplarrstycst}{ m m m m }{{#3}\mathrel{\multimap^{\AbsABT{#1}{#2}}}{#4}}
+\DeclareDocumentCommand{\tptensorstyabt}{ m m m m }{\OpABT{\kw{tensor}\cdsqbracks{\AbsABT{#1}{#2}}}{\AbsABT{#1}{#3};\AbsABT{#1}{#4}}}
+\DeclareDocumentCommand{\tptensorstycst}{ m m m m }{{#3}\mathrel{\otimes^{\AbsABT{#1}{#2}}}{#4}}
+\DeclareDocumentCommand{\tpsumstyabt}{ m m m m }{\OpABT{\kw{ichoice}\cdsqbracks{\AbsABT{#1}{#2}}}{\AbsABT{#1}{#3};\AbsABT{#1}{#4}}}
+\DeclareDocumentCommand{\tpsumstycst}{ m m m m }{{#3}\mathrel{\oplus^{\AbsABT{#1}{#2}}}{#4}}
+\DeclareDocumentCommand{\tpwithstyabt}{ m m m m }{\OpABT{\kw{with}\cdsqbracks{\AbsABT{#1}{#2}}}{\AbsABT{#1}{#3};\AbsABT{#1}{#4}}}
+\DeclareDocumentCommand{\tpwithstycst}{ m m m m }{{#3}\mathrel{{\&}^{\AbsABT{#1}{#2}}}{#4}}
+
+%% Two functional ones
+\DeclareDocumentCommand{\tpbangstycst}{ m m m m }{{\,!\,}_{#3}^{\AbsABT{#1}{#2}}.\,{#4}}
+\DeclareDocumentCommand{\tpquerystycst}{ m m m m }{{\,?\,}_{#3}^{\AbsABT{#1}{#2}}.\,{#4}}
+
+%% Channels 
+\DeclareDocumentCommand{\ChanSort}{}{\Sort{Chan}}
+
+%% Process terms
+\DeclareDocumentCommand{\ProcSort}{}{\Sort{Proc}}
+
+%% Labels
+\DeclareDocumentCommand{\lblleft}{}{\kw{left}}
+\DeclareDocumentCommand{\lblright}{}{\kw{right}}
+
+% Forward
+\DeclareDocumentCommand{\tpfwdabt}{ m m }{\OpABT{\kw{fwd}\cdsqbracks{#1}}{#2}}
+\DeclareDocumentCommand{\tpfwdcst}{ m m }{\kw{fwd}^{#1}{#2}}
+% Provider of unit
+\DeclareDocumentCommand{\tpcloseabt}{ m m }{\kw{close}\cdsqbracks{\AbsABT{#1}{#2}}}
+\DeclareDocumentCommand{\tpclosecst}{ m m }{\kw{close}^{\AbsABT{#1}{#2}}}
+% Client of unit
+\DeclareDocumentCommand{\tpwaitabt}{ m m m }{\OpABT{\kw{wait}}{{#1};{#2};{#3}}}
+\DeclareDocumentCommand{\tpwaitcst}{ m m m }{\kw{wait}^{#1}{#2};{#3}}
+% Provider of loli
+\DeclareDocumentCommand{\tplarrrcvabt}{ m m m m m }{\OpABT{\kw{rcv}\cdsqbracks{\AbsABT{#1}{#2};\AbsABT{#1}{#3}}}{\AbsABT{#1}{\AbsABT{#4}{#5}}}}
+\DeclareDocumentCommand{\tplarrrcvcst}{ m m m m m }{\lambda^{\AbsABT{#1}{#2}}{\parens{\IsOf{#4}{#3}}{#5}}}
+% Client of loli
+\DeclareDocumentCommand{\tplarrsndabt}{ m m m m }{\OpABT{\kw{snd}}{#1;#2;#3;#4}}
+\DeclareDocumentCommand{\tplarrsndcst}{ m m m m }{\kw{app}^{#2}{#1}\,\parens{#3};{#4}}
+% Provider of tensor
+\DeclareDocumentCommand{\tptensorsndabt}{ m m m m }{\OpABT{\kw{pair}\cdsqbracks{\AbsABT{#1}{#2}}}{\AbsABT{#1}{\AbsABT{#2}{#3}};\AbsABT{#1}{\AbsABT{#2}{#4}}}}
+\DeclareDocumentCommand{\tptensorsndcst}{ m m m m }{{#3}\mathrel{\otimes^{\AbsABT{#1}{#2}}}{#4}}
+% Client of tensor
+\DeclareDocumentCommand{\tptensorrcvabt}{ m m m m }{\OpABT{\kw{split}}{{#1};{#2};\AbsABT{#3}{#4}}}
+\DeclareDocumentCommand{\tptensorrcvcst}{ m m m m }{\kw{split}^{#2}\,{#1};\AbsABT{#3}{#4}}
+% Provider of internal choice
+\DeclareDocumentCommand{\tpinlabt}{ m m m m m }{\OpABT{\kw{inl}\cdsqbracks{\AbsABT{#1}{#2};\AbsABT{#1}{#3};\AbsABT{#1}{#4}}}{\AbsABT{#1}{#5}}}
+\DeclareDocumentCommand{\tpinrabt}{ m m m m m }{\OpABT{\kw{inr}\cdsqbracks{\AbsABT{#1}{#2};\AbsABT{#1}{#3};\AbsABT{#1}{#4}}}{\AbsABT{#1}{#5}}}
+\DeclareDocumentCommand{\tpinlcst}{ m m m m m }{\kw{switchL}^{\AbsABT{#1}{#2}};{#5}}
+\DeclareDocumentCommand{\tpinrcst}{ m m m m m }{\kw{switchR}^{\AbsABT{#1}{#2}};{#5}}
+% Client of internal choice
+\DeclareDocumentCommand{\tpcaseabt}{ m m m m }{\OpABT{\kw{case}}{#1;#2;#3;#4}}
+% \DeclareDocumentCommand{\tpcasecst}{ m m m m }{\kw{case}^{#1}\,{#2}\,\cdbraces{\kw{l} \casebrcst{#3} \mid \kw{r} \casebrcst{#4}}}
+\DeclareDocumentCommand{\tpcasecst}{ m m m m }{\kw{case}^{#1}\,{#2}\,\cdbraces{{#3} \mid {#4}}} %% Concise notation
+% Provider of external choice
+\DeclareDocumentCommand{\tpofferabt}{ m m m m }{\OpABT{\kw{offer}\cdsqbracks{\AbsABT{#1}{#2}}}{\AbsABT{#1}{\AbsABT{#2}{#3}};\AbsABT{#1}{\AbsABT{#2}{#4}}}}
+% \DeclareDocumentCommand{\tpoffercst}{ m m m m }{\kw{offer}^{{#2}\parens{#1}}\,\cdbraces{\kw{l}\casebrcst{#3} \mid \kw{r}\casebrcst{#4}}}
+\DeclareDocumentCommand{\tpoffercst}{ m m m m }{\kw{offer}^{\AbsABT{#1}{#2}}\,\cdbraces{{#3} \mid {#4}}}
+% Client of external choice
+\DeclareDocumentCommand{\tpselectlabt}{ m m m }{\OpABT{\kw{prl}}{#1;#2;{#3}}}
+\DeclareDocumentCommand{\tpselectlcst}{ m m m }{\kw{selL}^{#2}{#1};{#3}}
+\DeclareDocumentCommand{\tpselectrabt}{ m m m }{\OpABT{\kw{prr}}{#1;#2;{#3}}}
+\DeclareDocumentCommand{\tpselectrcst}{ m m m }{\kw{selR}^{#2}{#1};{#3}}
+% Spawn proc 
+\DeclareDocumentCommand{\tpspawnprocabt}{ m m m m }{\OpABT{\kw{spawn}\cdsqbracks{#1}}{#2;\AbsABT{#3}{#4}}}
+\DeclareDocumentCommand{\tpspawnproccst}{ m m m m }{\kw{spawn}^{#1}{#2};{\AbsABT{#3}{#4}}}
+% Bang and Receive of function values
+\DeclareDocumentCommand{\tpproduceproccst}{ m m m m }{\kw{produce}^{\AbsABT{#1}{#2}}\,{#3};{#4}}
+\DeclareDocumentCommand{\tpconsumeproccst}{ m m m m}{\kw{consume}^{#1}\,{#2};\AbsABT{#3}{#4}}
+\DeclareDocumentCommand{\tpqueryproccst}{ m m m m }{\kw{query}^{\AbsABT{#1}{#2}};\AbsABT{#3}{#4}}
+\DeclareDocumentCommand{\tpsupplyproccst}{ m m m m }{\kw{supply}^{#1}\,{#2}({#3});{#4}}
+
+%% Configurations
+\DeclareDocumentCommand{\ConfSort}{}{\Sort{Conf}}
+\DeclareDocumentCommand{\EventSort}{}{\Sort{Event}}
+
+\DeclareDocumentCommand{\ClockProcAbt}{m}{\ensuremath{\OpABT{\kw{clock}}{#1}}}
+% \DeclareDocumentCommand{\ClockProc}{m}{\ensuremath{{\,\,\bgroup\small\StopWatchEnd\egroup\,\,}_{#1}}}
+% \DeclareDocumentCommand{\ClockProc}{m}{\ensuremath{{\,\,\StopWatchEnd\,\,}_{#1}}}
+\DeclareDocumentCommand{\ClockProc}{m}{\ensuremath{{\,\,\VarClock\,\,}_{#1}}}
+\DeclareDocumentCommand{\RunProcAbt}{ m m }{\OpABT{\kw{proc}\sqbracks{#1}}{#2}}
+\DeclareDocumentCommand{\RunProc}{ m m }{\RunProcAbt{#1}{#2}}
+\DeclareDocumentCommand{\FwdProc}{ m m }{\OpABT{\kw{fwd}\sqbracks{#1}}{#2}}
+\DeclareDocumentCommand{\StopConf}{}{\mathop{\mathbf{1}}}
+
+\DeclareDocumentCommand{\actsnd}{m m}{{#1}\mathbin{!}{#2}}
+\DeclareDocumentCommand{\actrcv}{m m}{{#1}\mathbin{?}{#2}}
+\DeclareDocumentCommand{\actsil}{}{\varepsilon}
+\DeclareDocumentCommand{\actsndchanabt}{m m}{\kw{sndCh}[{#1}]({#2})}
+\DeclareDocumentCommand{\actrcvchanabt}{m m}{\kw{rcvCh}[{#1}]({#2})}
+\DeclareDocumentCommand{\actsndlblabt}{m m}{\kw{sndlbl}[{#1}]({#2})}
+\DeclareDocumentCommand{\actrcvlblabt}{m m}{\kw{rcvlbl}[{#1}]({#2})}
+\DeclareDocumentCommand{\actsndchancst}{m m}{\actsnd{#1}{#2}}
+\DeclareDocumentCommand{\actrcvchancst}{m m}{\actrcv{#1}{#2}}
+\DeclareDocumentCommand{\actsndlblcst}{m m}{\actsnd{#1}{#2}}
+\DeclareDocumentCommand{\actrcvlblcst}{m m}{\actrcv{#1}{#2}}
+\DeclareDocumentCommand{\actsndclosecst}{m}{\actsnd{#1}{\kw{cls}}}
+\DeclareDocumentCommand{\actrcvclosecst}{m}{\actrcv{#1}{\kw{cls}}}
+\DeclareDocumentCommand{\actsndvalcst}{m m}{\actsnd{#1}{\kw{val}(#2)}}
+\DeclareDocumentCommand{\actrcvvalcst}{m m}{\actrcv{#1}{\kw{val}(#2)}}
+
+
+
+% \DeclareDocumentCommand{\tunnelabt}{ m }{\OpABT{\kw{tunnel}}{#1}}
+% \DeclareDocumentCommand{\tunnelcst}{ m }{{\bullet_{#1}}}
+
+%% Statics
+\DeclareDocumentCommand{\TimeIsRight}{ m m }{\IsOf{#1}{#2}}
+\DeclareDocumentCommand{\IsBefore}{ m m }{\TimeIsRight{#1}{\cleqcst{#2}}}
+\DeclareDocumentCommand{\IsFCtx}{ m }{\JPost{#1}{\mathsf{FCtx}}}
+\DeclareDocumentCommand{\IsFrame}{ m }{\JPost{#1}{\mathsf{Frame}}}
+\DeclareDocumentCommand{\IsFType}{ m }{\JPost{#1}{\mathsf{Cond}}}
+\DeclareDocumentCommand{\IsSType}{ m }{\JPost{#1}{\mathsf{SType}}}
+\DeclareDocumentCommand{\IsDuration}{ m }{\JPost{#1}{\mathsf{Duration}}}
+\DeclareDocumentCommand{\IsTime}{ m }{\JPost{#1}{\mathsf{Time}}}
+
+\DeclareDocumentCommand{\IsOfProc}{ m m m }{\IsOfKd{{#1}\mathrel{@}{#2}}{#3}}
+
+\DeclareDocumentCommand{\IsOfConf}{ m m m }{\IsOfKd{\ClockProc{#1}, {#2}}{#3}}
+\DeclareDocumentCommand{\IsOfEvent}{ m m }{\IsOfKd{#1}{#2}}
+
+\DeclareDocumentCommand{\Interp}{m}{\left\lceil{#1}\right\rceil}
+
+%% Forward and Cut Compatibility
+\DeclareDocumentCommand{\FwdComp}{m m m}{{#1}\rtimes{#2}\mathrel{@}{#3}}
+\DeclareDocumentCommand{\CutComp}{m m m}{{#1}\ltimes{#2}\mathrel{@}{#3}}
+
+% \DeclareDocumentCommand{\EmptySig}{}{\varepsilon}
+% \DeclareDocumentCommand{\EmptySubconf}{}{\varepsilon}
+% \DeclareDocumentCommand{\EmptyCtx}{}{\cdot}
+% \DeclareDocumentCommand{\TSigma}{}{\tilde{\Sigma}}
+
+%% Dynamics
+% \DeclareDocumentCommand{\TimeIsRight}{ m m }{{#2}\parens{#1}\mathrel{\mathsf{IsRight}}}
+% \DeclareDocumentCommand{\runprocframed}{ m m m }{\AbsABT{\tilde{\nu}_{#1}}{{#2}\mathbin{\triangleleft}{#3}}}
+
+%% Schedules
+\DeclareDocumentCommand{\SchedStepsTo}{ m }{\DStepsTo[]{}}
+\DeclareDocumentCommand{\EdfStepsTo}{ }{\SchedStepsTo{\kw{edf}}}
+
+\DeclareDocumentCommand{\ProcEarliest}{ m m m }{{#1}~\mathsf{earliest}~({#2}, {#3})}
+
+%% Recurrent
+
+\DeclareDocumentCommand{\ffam}{m m}{\OpABTn{#1}{#2}}
+\DeclareDocumentCommand{\defCoindFam}{m m m}{\OpABTn{#1}{#2} \coloneqq_{\kw{CoInd}} {#3}}

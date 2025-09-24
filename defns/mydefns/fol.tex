@@ -1,0 +1,69 @@
+% \DeclareDocumentCommand{\topabtOld}{ }{\kw{top}}
+% \DeclareDocumentCommand{\botabtOld}{ }{\kw{bot}}
+% \DeclareDocumentCommand{\landabtOld}{ m m }{\OpABT{\kw{and}}{{#1};{#2}}}
+% \DeclareDocumentCommand{\lorabtOld}{ m m }{\OpABT{\kw{or}}{{#1};{#2}}}
+% \DeclareDocumentCommand{\limpabtOld}{ m m }{\OpABT{\kw{arr}}{{#1};{#2}}}
+% \DeclareDocumentCommand{\lforallabtOld}{ m m }{\OpABT{\kw{forall}}{{#1}.{#2}}}
+% \DeclareDocumentCommand{\lexistsabtOld}{ m m }{\OpABT{\kw{exists}}{{#1}.{#2}}}
+% \DeclareDocumentCommand{\lforallabtOld}{ m m }{\OpABT{\kw{forall}}{{#1}.{#2}}}
+% \DeclareDocumentCommand{\lexistsabt}{ m m }{\OpABT{\kw{exists}}{{#1}.{#2}}}
+% \DeclareDocumentCommand{\eqabtOld}{ m m }{\OpABT{\kw{eq}}{{#1};{#2}}}
+% \DeclareDocumentCommand{\leqabtOld}{ m m }{\OpABT{\kw{leq}}{{#1};{#2}}}
+% \DeclareDocumentCommand{\leqabtOld}{ m m }{\OpABT{\kw{leq}}{{#1};{#2}}}
+
+%% Notions of first order logic
+
+%% Propositional Connectives
+
+\DeclareDocumentCommand{\topabt}{ }{\Opn{top}}
+\DeclareDocumentCommand{\topcst}{ }{\top}
+\DeclareDocumentCommand{\botabt}{ }{\Opn{bot}}
+\DeclareDocumentCommand{\botcst}{ }{\bot}
+
+\DeclareDocumentCommand{\landabt}{ m m }{\Abt{\Opn{and}}({#1}\sep {#2})}
+% \DeclareDocumentCommand{\landcst}{ m m }{\landcst{#1}{#2}}
+\DeclareDocumentCommand{\lorabt}{ m m }{\Abt{\Opn{or}}({#1}\sep {#2})}
+% \DeclareDocumentCommand{\lorcst}{ m m }{\lorcst{#1}{#2}}
+\DeclareDocumentCommand{\limpabt}{ m m }{\Abt{\Opn{arr}}({#1}\sep {#2})}
+% \DeclareDocumentCommand{\limpcst}{ m m }{\limpcst{#1}{#2}}
+
+%% Quantifiers
+\DeclareDocumentCommand{\lforallabt}{ m m }{\Abt{\Opn{forall}}({#1}.{#2})}
+\DeclareDocumentCommand{\lforallcst}{ m m }{\forall{#1}.{#2}}
+\DeclareDocumentCommand{\lexistsabt}{ m m }{\Abt{\Opn{exists}}({#1}.{#2})}
+\DeclareDocumentCommand{\lexistscst}{ m m }{\forall{#1}.{#2}}
+
+%% Quantifiers that names the sort
+% \DeclareDocumentCommand{\lforallabt}{ m m }{\Abt{\Opn{forall}\cdsqbracks{#1}}{{#2}.{#3}}}
+% \DeclareDocumentCommand{\lforallcst}{ m m }{\forall({#1} \in \cdsqbracks{#2}).{#3}}
+% \DeclareDocumentCommand{\lexistsabt}{ m m }{\Abt{\Opn{exists}\cdsqbracks{#1}}{{#2}.{#3}}}
+% \DeclareDocumentCommand{\lexistscst}{ m m }{\forall({#1} \in \cdsqbracks{#2}).{#2}}
+
+%% Relations
+
+\DeclareDocumentCommand{\eqabt}{ m m }{\Abt{\Opn{eq}}({#1}\sep {#2})}
+\DeclareDocumentCommand{\eqcst}{ m m }{{#1}={#2}}
+
+% \DeclareDocumentCommand{\eqabt*}{ m m }{\Abt{\Opn{eq}}{{#1};{#2}}}
+% \DeclareDocumentCommand{\eqcst*}{ m m }{{#2}=_{#1}{#3}}
+
+\DeclareDocumentCommand{\leqabt}{ m m }{\Abt{\Opn{leq}}({#1}\sep {#2})}
+\DeclareDocumentCommand{\leqcst}{ m m }{{#1}\leq{#2}}
+
+\DeclareDocumentCommand{\fbetween}{m m m}{{#1}\leq{#2}\leq{#3}}
+
+% \DeclareDocumentCommand{\cltabt}{ m }{\Abt{\Opn{lt}}{#1}}
+% \DeclareDocumentCommand{\cltcst}{ m }{\cdot{<}{#1}}
+% \DeclareDocumentCommand{\cgtabt}{ m }{\Abt{\Opn{gt}}{#1}}
+% \DeclareDocumentCommand{\cgtcst}{ m }{\cdot{>}{#1}}
+% \DeclareDocumentCommand{\clandabt}{ m m }{\Abt{\Opn{and}}{{#1};{#2}}}
+% \DeclareDocumentCommand{\clandcst}{ m m }{\landcst{#1}{#2}}
+% \DeclareDocumentCommand{\clorabt}{ m m }{\Abt{\Opn{and}}{{#1};{#2}}}
+% \DeclareDocumentCommand{\clorcst}{ m m }{\lorcst{#1}{#2}}
+
+%% Semantics
+\DeclareDocumentCommand{\InterpOf}{m m}{\llbracket{#1}\rrbracket_{#2}}
+\DeclareDocumentCommand{\Interp}{m}{\llbracket{#1}\rrbracket}
+\DeclareDocumentCommand{\InterpA}{m m}{\llbracket{#1}\rrbracket(#2)}
+
+\DeclareDocumentCommand{\Satisfy}{m m}{{#1}\vDash{#2}}

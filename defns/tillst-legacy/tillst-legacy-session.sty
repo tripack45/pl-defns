@@ -1,0 +1,138 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tillst-legacy-session}[\texttt{TILLST} Legacy Definitions: Session Types]
+
+\RequirePackage{xparse}
+
+%% Session types
+\DeclareDocumentCommand{\STypeSort}{}{\Sort{Ses Typ}}
+
+\DeclareDocumentCommand{\unitstyabt}{}{\kw{unit}}
+\DeclareDocumentCommand{\unitstycst}{}{\ensuremath{\mathbf{1}}}
+\DeclareDocumentCommand{\larrstyabt}{ m m }{\OpABT{\kw{larr}}{#1;#2}}
+\DeclareDocumentCommand{\larrstycst}{ m m }{{#1}\mathrel{\multimap}{#2}}
+\DeclareDocumentCommand{\tensorstyabt}{ m m }{\OpABT{\kw{tensor}}{#1;#2}}
+\DeclareDocumentCommand{\tensorstycst}{ m m }{{#1}\mathrel{\otimes}{#2}}
+\DeclareDocumentCommand{\ichoicestyabt}{ m m }{\OpABT{\kw{ichoice}\cdsqbracks{\overline{#1}}}{\overline{#2}}}
+\DeclareDocumentCommand{\ichoicestycst}{ m m }{\OpABTn{\oplus}{\overline{#1 \hookrightarrow #2}}}
+\DeclareDocumentCommand{\withstyabt}{ m m }{\OpABT{\kw{with}\cdsqbracks{\overline{#1}}}{\overline{#2}}}
+\DeclareDocumentCommand{\withstycst}{ m m }{\OpABTn{\&}{\overline{#1 \hookrightarrow #2}}}
+
+\DeclareDocumentCommand{\bsumstycst}{ m m }{\sumtyabt{#1}{#2}}
+\DeclareDocumentCommand{\bsumstycst}{ m m }{{#1}\mathrel{\oplus}{#2}}
+\DeclareDocumentCommand{\bwithstyabt}{ m m }{\OpABTn{\kw{with}}{#1;#2}}
+\DeclareDocumentCommand{\bwithstycst}{ m m }{{#1}\mathrel{\&}{#2}}
+
+%% Channels 
+\DeclareDocumentCommand{\ChanSort}{}{\Sort{Chan}}
+
+%% Process terms
+\DeclareDocumentCommand{\ProcSort}{}{\Sort{Proc}}
+
+% Forward
+\DeclareDocumentCommand{\fwdabt}{ m }{\OpABT{\kw{fwd}}{#1}}
+\DeclareDocumentCommand{\fwdcst}{ m }{\OpABT{\kw{fwd}}{#1}}
+% Provider of unit
+\DeclareDocumentCommand{\closeabt}{}{\kw{close}}
+\DeclareDocumentCommand{\closecst}{}{\kw{\unitexcst}}
+% Client of unit
+\DeclareDocumentCommand{\waitabt}{ m m }{\OpABT{\kw{wait}}{{#1};{#2}}}
+\DeclareDocumentCommand{\waitcst}{ m m }{\OpABT{\kw{wait}}{{#1};{#2}}}
+% Provider of loli
+\DeclareDocumentCommand{\larrrcvabt}{ m m m }{\OpABT{\kw{rcv}\cdsqbracks{#1}}{\AbsABT{#2}{#3}}}
+\DeclareDocumentCommand{\larrrcvcst}{ m m m }{\OpABT{\lambda_{#1}}{\AbsABT{#2}{#3}}}
+% Client of loli
+\DeclareDocumentCommand{\larrsndabt}{ m m m m }{\OpABT{\kw{snd}}{#1;#2;\AbsABT{#3}{#4}}}
+\DeclareDocumentCommand{\larrsndcst}{ m m m m }{#1\parens{#2};\AbsABT{#3}{#4}}
+% Provider of tensor
+\DeclareDocumentCommand{\tensorsndabt}{ m m }{\OpABT{\kw{pair}}{#1;#2}}
+\DeclareDocumentCommand{\tensorsndcst}{ m m }{{#1}\mathrel{\otimes}{#2}}
+% Client of tensor
+\DeclareDocumentCommand{\tensorrcvabt}{ m m m m }{\OpABT{\kw{split}}{#1;\AbsABT{#2}{\AbsABT{#3}{#4}}}}
+\DeclareDocumentCommand{\tensorrcvcst}{ m m m m }{\kw{split}\,{#1};\AbsABT{#2}{\AbsABT{#3}{#4}}}
+% Provider of internal choice
+\DeclareDocumentCommand{\inabt}{ m m m m }{\OpABT{\kw{in}\cdsqbracks{\overline{#1};\overline{#2}}\cdsqbracks{#3}}{#4}}
+\DeclareDocumentCommand{\incst}{ m m m m }{{#3}\cdot{#4}}
+% Client of internal choice
+\DeclareDocumentCommand{\caseabt}{ m m m m }{\OpABT{\kw{case}\cdsqbracks{\overline{#2}}}{#1;\overline{\AbsABT{#3}{#4}}}}
+\DeclareDocumentCommand{\casecst}{ m m m m }{\kwop{case}{#1}\,\cdbraces{\overline{{#2}\cdot{#3}\casebrcst{#4}}}}
+% Provider of external choice
+\DeclareDocumentCommand{\offerabt}{ m m }{\OpABT{\kw{offer}\cdsqbracks{\overline{#1}}}{\overline{#2}}}
+\DeclareDocumentCommand{\offercst}{ m m }{\kw{offer}\,\cdbraces{\overline{{#1}\casebrcst{#2}}}}
+% Client of external choice
+\DeclareDocumentCommand{\selectcst}{ m m m m }{{#1}\cdot{#2};\AbsABT{#3}{#4}}
+\DeclareDocumentCommand{\selectabt}{ m m m m }{\OpABT{\kw{select}\cdsqbracks{#2}}{#1;\AbsABT{#3}{#4}}}
+% Spawn proc 
+\DeclareDocumentCommand{\spawnprocabt}{ m m m m }{\OpABT{\kw{spawn}\cdsqbracks{#2}}{#1;\AbsABT{#3}{#4}}}
+\DeclareDocumentCommand{\spawnproccst}{ m m m m }{\OpABT{\kw{spawn}}{#1;\AbsABT{#3}{#4}}}
+
+%% binary version of the choices 
+\DeclareDocumentCommand{\inlabt}{ m m m m m }{\OpABT{\kw{inl}\cdsqbracks{#1;#3;#4}}{\AbsABT{#2}{#5}}}
+\DeclareDocumentCommand{\inrabt}{ m m m m m }{\OpABT{\kw{inr}\cdsqbracks{#1;#3;#4}}{\AbsABT{#2}{#5}}}
+\DeclareDocumentCommand{\inlcst}{ m m m m m }{\kw{l}^{\IsOf{#2}{#1}}\cdot{#5}}
+\DeclareDocumentCommand{\inrcst}{ m m m m m }{\kw{r}^{\IsOf{#2}{#1}}\cdot{#5}}
+% Client of internal choice
+\DeclareDocumentCommand{\bcaseabt}{ m m m m }{\OpABT{\kw{case}}{#1;#2;#3;#4}}
+\DeclareDocumentCommand{\bcasecst}{ m m m m }{\kw{case}^{#1}\,{#2}\,\cdbraces{\kw{l} \casebrcst{#3} \mid \kw{r} \casebrcst{#4}}}
+% Provider of external choice
+\DeclareDocumentCommand{\bofferabt}{ m m m m }{\OpABT{\kw{offer}\cdsqbracks{#1}}{\AbsABT{#2}{#3};\AbsABT{#2}{#4}}}
+\DeclareDocumentCommand{\boffercst}{ m m m m }{\kw{offer}^{\IsOf{#2}{#1}}\,\cdbraces{\kw{l}\casebrcst{#3} \mid \kw{r}\casebrcst{#4}}}
+% Client of external choice
+\DeclareDocumentCommand{\bselectlabt}{ m m m }{\OpABT{\kw{prl}}{#1;#2;{#3}}}
+\DeclareDocumentCommand{\bselectlcst}{ m m m }{{#1}\cdsqbracks{#2}\cdot\kw{l};{#3}}
+\DeclareDocumentCommand{\bselectrabt}{ m m m }{\OpABT{\kw{prr}}{#1;#2;{#3}}}
+\DeclareDocumentCommand{\bselectrcst}{ m m m }{{#1}\cdsqbracks{#2}\cdot\kw{r};{#3}}
+
+%% Two functional ones
+\DeclareDocumentCommand{\bangstycst}{ m m }{{\,!\,}_{#1}\cdot\,{#2}}
+\DeclareDocumentCommand{\querystycst}{ m m }{{\,?\,}_{#1}\cdot\,{#2}}
+
+%% Configurations
+\DeclareDocumentCommand{\ConfSort}{}{\Sort{Conf}}
+
+\DeclareDocumentCommand{\runprocabt}{ m m m }{\OpABT{\kw{run}}{\AbsABT{#1}{({#2};{#3})}}}
+\DeclareDocumentCommand{\runproccst}{ m m m }{\AbsABT{\nu_{#1}}{{#2}\mathbin{\triangleleft}{#3}}}
+
+\DeclareDocumentCommand{\tunnelabt}{ m }{\OpABT{\kw{tunnel}}{#1}}
+\DeclareDocumentCommand{\tunnelcst}{ m }{{\bullet_{#1}}}
+
+%% Statics
+\DeclareDocumentCommand{\IsOfChan}{ m m }{\IsOf{#1}{#2}}
+\DeclareDocumentCommand{\IsOfProc}{ m m }{\IsOfKd{#1}{#2}}
+\DeclareDocumentCommand{\IsOfProcSILL}{ m m }{\IsOfKd{#1}{#2}}
+\DeclareDocumentCommand{\IsOfConf}{ m m }{\IsOfComp{#1}{#2}}
+
+\DeclareDocumentCommand{\EmptySig}{}{\varepsilon}
+\DeclareDocumentCommand{\EmptySubconf}{}{\varepsilon}
+\DeclareDocumentCommand{\EmptyCtx}{}{\cdot}
+
+\DeclareDocumentCommand{\TSigma}{}{\tilde{\Sigma}}
+
+%% Dynamics
+\DeclareDocumentCommand{\runprocframed}{ m m m }{\AbsABT{\tilde{\nu}_{#1}}{{#2}\mathbin{\triangleleft}{#3}}}
+
+\DeclareDocumentCommand{\actiontauabt}{}{\kw{none}}
+\DeclareDocumentCommand{\actiontaucst}{}{\varepsilon}
+\DeclareDocumentCommand{\actionlqabt}{ m m }{\OpABT{\kw{actionLQ}}{{#1};{#2}}}
+\DeclareDocumentCommand{\actionlqcst}{ m m }{{#2}\mathbin{?}{#1}}
+\DeclareDocumentCommand{\actionrqabt}{ m m }{\OpABT{\kw{actionRQ}}{{#1};{#2}}}
+\DeclareDocumentCommand{\actionrqcst}{ m m }{{#1}\mathbin{?}{#2}}
+\DeclareDocumentCommand{\actionleabt}{ m m }{\OpABT{\kw{actionLE}}{{#1};{#2}}}
+\DeclareDocumentCommand{\actionlecst}{ m m }{{#2}\mathbin{!}{#1}}
+\DeclareDocumentCommand{\actionreabt}{ m m }{\OpABT{\kw{actionRE}}{{#1};{#2}}}
+\DeclareDocumentCommand{\actionrecst}{ m m }{{#1}\mathbin{!}{#2}}
+
+%% Payload
+\DeclareDocumentCommand{\pldcloseabt}{}{\kw{close}}
+\DeclareDocumentCommand{\pldclosecst}{}{\kw{close}}
+\DeclareDocumentCommand{\pldlblabt}{ m }{\OpABT{\kw{label}}{#1}}
+\DeclareDocumentCommand{\pldlblcst}{ m }{{#1}}
+\DeclareDocumentCommand{\pldconfabt}{ m }{\OpABT{\kw{conf}}{#1}}
+\DeclareDocumentCommand{\pldconfcst}{ m }{{#1}}
+
+% \DeclareDocumentCommand{\leftquery}{ m }{{#1}\kw{?}}
+% \DeclareDocumentCommand{\rightquery}{ m }{\kw{?}{#1}}
+% \DeclareDocumentCommand{\leftemit}{ m }{{#1}\kw{!}}
+% \DeclareDocumentCommand{\rightemit}{ m }{\kw{!}{#1}}
+
+%% Tunneled configuration
+\DeclareDocumentCommand{\tconfcst}{ m m }{{#1}\mathbin{||}{#2}}

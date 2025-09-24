@@ -1,0 +1,129 @@
+\makeatletter
+
+%% Fragments of the syntax
+\DeclareDocumentCommand{\send}{}{\Opn{send}}
+\DeclareDocumentCommand{\recv}{}{\Opn{recv}}
+\DeclareDocumentCommand{\eval}{}{\Opn{eval}}
+\DeclareDocumentCommand{\EVALPAR}{}{\Opn{EVALPAR}}
+
+%% Timing Spec
+\DeclareDocumentCommand{\when}{m}{\Opn{?}\minor@bracks{#1}\,}
+\DeclareDocumentCommand{\at}{m}{\Opn{@}\minor@bracks{#1}\,}
+
+%% Messages
+\DeclareDocumentCommand{\clsMsg}{}{\Opn{cls}}
+\DeclareDocumentCommand{\leftMsg}{}{\Opn{left}}
+\DeclareDocumentCommand{\rightMsg}{}{\Opn{right}}
+\DeclareDocumentCommand{\valMsg}{m}{\Opn{val}\parens{#1}}
+\DeclareDocumentCommand{\chanMsg}{m}{\{#1\}}
+
+% Send / Recv Skeletons
+\DeclareDocumentCommand{\sndInt}{m}{\A@bt{\send}[\Opn{-}](#1)}
+\DeclareDocumentCommand{\rcvInt}{}{\A@bt{\recv}[\Opn{-}]}
+\DeclareDocumentCommand{\sndCli}{m m}{\A@bt{\send}[#1](#2)}
+\DeclareDocumentCommand{\rcvCli}{m}{\A@bt{\recv}[#1]}
+
+% Send / Recv timed ops
+\DeclareDocumentCommand{\tCommOp@}{m m m}{%
+\IfNoValueTF{#3}%
+{\when{#2}\A@bt{#1}[\Opn{-}]}% Offering channel
+{\at{#2}\A@bt{#1}[#3]}% Client channel
+}
+\DeclareDocumentCommand{\tsend}{m o}{\tCommOp@{\send}{#1}{#2}}
+\DeclareDocumentCommand{\trecv}{m o}{\tCommOp@{\recv}{#1}{#2}}
+
+% Send / Recv Full
+\DeclareDocumentCommand{\tpSndInt}{m m o}{\when{#1}\, \sndInt{#2} \IfNoValueF{#3}{\mathbin{;} #3}}
+\DeclareDocumentCommand{\tpRcvInt}{m o}{\when{#1}\, \rcvInt \IfNoValueF{#2}{\mathbin{;} #2}}
+\DeclareDocumentCommand{\tpSndCli}{m m m o}{\at{#1}\, \sndCli{#2}{#3} \IfNoValueF{#4}{\mathbin{;} #4}}
+\DeclareDocumentCommand{\tpRcvCli}{m m o}{\at{#1}\, \rcvCli{#2} \IfNoValueF{#3}{\mathbin{;} #3}}
+
+%% Follow-ups 
+\DeclareDocumentCommand{\subProc}{m m}{\major@bracks{#1};{#2}}
+\DeclareDocumentCommand{\leftSubP}{m}{\subProc{\leftMsg}{#1}}
+\DeclareDocumentCommand{\rightSubP}{m}{\subProc{\rightMsg}{#1}}
+\DeclareDocumentCommand{\hoSubP}{m m}{\subProc{\chanMsg{#1}}{#2}}
+\DeclareDocumentCommand{\valSubP}{m m}{\contArm{\valMsg{#1}}{#2}}
+\DeclareDocumentCommand{\clsSubP}{}{\major@bracks{\clsMsg}}
+
+%% Continuations
+\DeclareDocumentCommand{\contArm}{m m}{\sing@map{#1}{#2}}
+\DeclareDocumentCommand{\clsCont}{m}{\contArm{\clsMsg}{#1}}
+\DeclareDocumentCommand{\caseCont}{m m}{\{\contArm{\leftMsg}{#1}\mathbin{|}\contArm{\rightMsg}{#2}\}}
+\DeclareDocumentCommand{\chanCont}{m m}{\contArm{\chanMsg{#1}}{#2}}
+\DeclareDocumentCommand{\valCont}{m m}{\contArm{\valMsg{#1}}{#2}}
+
+%% Prefixes
+\DeclareDocumentCommand{\sendstmt}{m m}{\A@bt{\send}[#1](#2)}
+\DeclareDocumentCommand{\recvstmt}{m}{\A@bt{\recv}[#1]}
+\DeclareDocumentCommand{\recvbstmt}{m m}{{#2}\mathop{\coloneq}\A@bt{\recv}[#1]}
+\DeclareDocumentCommand{\evalstmt}{m m}{\at{#1}\A@bt{\eval}(#2)}
+\DeclareDocumentCommand{\evalbstmt}{m m m}{\at{#1}{#3}\mathop{\coloneq}\A@bt{\eval}(#2)}
+\DeclareDocumentCommand{\expevalstmt}{m m m}{\evalbstmt{#1}{#2}{#3}}
+\DeclareDocumentCommand{\evalparbstmt}{m m m m}{\at{#1}{#4}\mathop{\coloneq}\A@bt{\EVALPAR}({#2};{#3})}
+
+
+%% Send / Recv / Binding recv statements
+\DeclareDocumentCommand{\tsendSt}{m o m}{\IfNoValueTF{#2}{\when{#1}\A@bt{\send}[-](#3)}{\at{#1}\A@bt{\send}[#2](#3)}}
+\DeclareDocumentCommand{\trecvSt}{m o}{\IfNoValueTF{#2}{\when{#1}\A@bt{\recv}[-]}{\at{#1}\A@bt{\recv}[#2]}}
+\DeclareDocumentCommand{\trecvbSt}{m o m}{\IfNoValueTF{#2}{\when{#1}\,{#3}\mathop{\coloneq}\A@bt{\recv}[-]}{\at{#1}\,{#3}\mathop{\coloneq}\A@bt{\recv}[#2]}}
+
+\DeclareDocumentCommand{\tfwdSt}{m m}{\at{#1}\A@bt{\Opn{fwd}}[#2]}
+\DeclareDocumentCommand{\tspawnSt}{m m}{\at{#1}\A@bt{\Opn{spawn}}(#2)}
+\DeclareDocumentCommand{\tspawnbSt}{m m m}{\at{#1}\,{#3}\mathop{\coloneq}\A@bt{\Opn{spawn}}(#2)}
+%% Generic shape of procs
+
+%% The first optional argument is channel name. 
+%% When left out it is taken to be the offering channel
+\DeclareDocumentCommand{\tsendP}{s m o m m}{\tsendSt{#2}[#3]{#4}\mathbin{;}{#5}}
+\DeclareDocumentCommand{\trecvP}{s m o m}{\trecvSt{#2}[#3]\mathbin{;}{#4}}
+\DeclareDocumentCommand{\trecvbP}{s m o m m}{\trecvbSt{#2}[#3]{#4}\mathbin{;}{#5}}
+
+\DeclareDocumentCommand{\tfwdP}{s m m}{\tfwdSt{#2}{#3}}
+\DeclareDocumentCommand{\tspawnP}{s m m m m}{\tspawnbSt{#2}{#3}{#4}\mathbin{;}{#5}}
+\DeclareDocumentCommand{\tevalbP}{s m m m m}{\evalbstmt{#2}{#3}{#4}\mathbin{;}{#5}}
+\DeclareDocumentCommand{\tevalparbP}{s m m m m m}{\evalparbstmt{#2}{#3}{#4}{#5}\mathbin{;}{#6}}
+\DeclareDocumentCommand{\evalStack}{m m}{\overline{\Abs(#1){#2}}}
+\DeclareDocumentCommand{\evalStackCont}{m m m}{\evalStack{#1}{#2}\mathbin{;}{#3}}
+
+%% Operation Semantics
+\DeclareDocumentCommand{\actsnd}{m m}{{#1}\mathbin{!}{#2}}
+\DeclareDocumentCommand{\actrcv}{m m}{{#1}\mathbin{?}{#2}}
+\DeclareDocumentCommand{\actsil}{}{\varepsilon}
+
+
+\DeclareDocumentCommand{\ConfSort}{}{\sort{Conf}}
+\DeclareDocumentCommand{\EventSort}{}{\sort{Event}}
+
+\DeclareDocumentCommand{\ClockProcAbt}{m}{\ensuremath{\Abt{\Opn{clock}}{#1}}}
+% \DeclareDocumentCommand{\ClockProc}{m}{\ensuremath{{\,\,\bgroup\small\StopWatchEnd\egroup\,\,}_{#1}}}
+% \DeclareDocumentCommand{\ClockProc}{m}{\ensuremath{{\,\,\StopWatchEnd\,\,}_{#1}}}
+\DeclareDocumentCommand{\ClockProcCst}{m}{\ensuremath{{\,\,\VarClock\,\,}_{#1}}}
+
+% \DeclareDocumentCommand{\ClockProc}{s m}{\IfBooleanTF{#1}{\ClockProcCst{#2}}{\ClockProcAbt{#2}}}
+%% Everything is just cst due to previous sloppyness
+% \DeclareDocumentCommand{\ClockProc}{s m}{\IfBooleanTF{#1}{\ClockProcCst{#2}}{\ClockProcCst{#2}}}
+
+% Includes the clock as an svg graphics
+\DeclareDocumentCommand{\ClockSym}{}{\includegraphics[height=.8em]{fig/Clock.pdf}}
+\DeclareDocumentCommand{\ClockOp}{}{\mathrel{\ClockSym}}
+\DeclareDocumentCommand{\ClockProc}{s m}{\ensuremath{\ClockOp_{#2}}}
+
+\DeclareDocumentCommand{\ConfAt}{s m m}{\ClockProc{#2}\{{#3}\}}
+
+\DeclareDocumentCommand{\RunProcAbt}{ m m o }{\Abt{\Opn{proc}\sqbracks{#1}\IfNoValueF{#3}{\{{#3}\}}}\parens{#2}}
+\DeclareDocumentCommand{\RunProc}{ m m o }{\IfNoValueTF{#3}{\RunProcAbt{#1}{#2}}{\RunProcAbt{#1}{#2}[#3]}}
+
+\DeclareDocumentCommand{\FwdProc}{ m m }{\Abt{\Opn{fwd}\sqbracks{#1}}\parens{#2}}
+\DeclareDocumentCommand{\StopConf}{s}{\IfBooleanTF{#1}{\mathop{\mathbf{1}}}{\Opn{Stop}}}
+
+% Processes without temporal predicate p argument
+
+%% Stepping
+\DeclareDocumentCommand{\TMultiStepsTo}{s o m m m m}{%
+\IfBooleanTF{#1}%
+{\IfNoValueF{#2}{{#2}\mathbin{:}}\ConfAt*{#3}{#4} \MultiStepsTo{} \ConfAt{#5}{#6}}%
+{\IfNoValueF{#2}{{#2}\mathbin{:}}\ConfAt{#3}{#4}  \MultiStepsTo{} \ConfAt{#5}{#6}}%
+}
+
+\makeatother

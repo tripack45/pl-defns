@@ -1,0 +1,44 @@
+
+\makeatletter
+
+\DeclareDocumentCommand{\expose}{m m}{{{#1}{\,|}_{#2}}}
+\DeclareDocumentCommand{\wp}{m m m}{{#1}^{\Abs(#2){#3}}}
+
+% Proof irrelevant 
+
+\DeclareDocumentCommand{\LInt}{m m}{\mathcal{L}\llbracket{{#1}}\rrbracket\mathrel{@}{#2}}
+\DeclareDocumentCommand{\VInt}{m m}{\mathcal{V}\llbracket{{#1}}\rrbracket\mathrel{@}{#2}}
+\DeclareDocumentCommand{\LSInt}{m m}{\mathcal{L}^\star\llbracket{{#1}}\rrbracket\mathrel{@}{#2}}
+\DeclareDocumentCommand{\VSInt}{m m}{\mathcal{V}^\star\llbracket{{#1}}\rrbracket\mathrel{@}{#2}}
+
+\DeclareDocumentCommand{\LAnyInt}{m m}{\mathcal{L}^{(\star)}\llbracket{{#1}\rrbracket}{\mathrel{@}{#2}}}
+\DeclareDocumentCommand{\VAnyInt}{m m}{\mathcal{V}^{(\star)}\llbracket{{#1}\rrbracket}{\mathrel{@}{#2}}}
+
+\DeclareDocumentCommand{\StarOpt}{m}{\ensuremath{{\left({#1}\right)}^{(\star)}}}
+
+\DeclareDocumentCommand{\sementails}{m}{\gg{#1}}
+\DeclareDocumentCommand{\SemIsOf}{m m}{{#1}\in{#2}}
+
+% Proof relevant 
+\DeclareDocumentCommand{\WLInt}{m m m m m}{{#1} \vDash {#2} \in_{#2} \mathcal{L}\llbracket{{#3}\mathrel{@}{#4}}\rrbracket}
+\DeclareDocumentCommand{\WLSInt}{m m m m m}{{#1} \vDash {#2} \in_{#3} \mathcal{L}^\star\llbracket{{#3}\mathrel{@}{#4}}\rrbracket}
+\DeclareDocumentCommand{\WLSIntD}{m m m m}{{#1}\vDash {#2} \in \mathcal{L}^\star\llbracket{{#3}\mathrel{@}{#4}}\rrbracket}
+
+%\DeclareDocumentCommand{\gl}{m m}{{#1} \vDash {#2}}
+\DeclareDocumentCommand{\gl}{m m}{\langle{#1}, {#2}\rangle}
+
+%% Generic LR definition
+%% Arguments: Star [Proof] {Term} [Family] {Type}
+%% Default: Type is in interpretation brackets, family proceeds brackets
+%%          p : M \in F[[ A ]]
+%% Starred: Type is alone, family indexes membership operator
+%%          p : M \in_F A 
+%% Proof argument is optional
+\DeclareDocumentCommand{\InLR}{s o m d<> m}{%
+\IfNovalueF{#2}{{#2}\mathbin{:}}{#3}%
+\IfBooleanTF{#1}%
+{\IfNoValueTF{#4}{\in}{\in_{#4}}_{#5}}%
+{\in \IfNoValueF{#4}{#4}\llbracket{#5}\rrbracket}
+}
+
+\makeatother

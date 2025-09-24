@@ -1,0 +1,171 @@
+% Borrowed from 15-413's definitions for lax cost semantics
+
+\makeatletter
+
+\NewDocumentCommand{\fif}{s}{\IfBooleanTF{#1}{\mathrel{\phantom{\fif}}}{\mathrel{\text{iff}}}}  % hat tip to gries
+
+\NewDocumentCommand{\unitty}{}{\unitTy*}
+\NewDocumentCommand{\unitex}{}{\unitEx*}
+
+\NewDocumentCommand{\zeroty}{}{\voidTy*}
+\NewDocumentCommand{\voidty}{}{\voidTy}
+\NewDocumentCommand{\absurdex}{m m}{\absurdEx*[#1]{#2}}
+
+% \NewDocumentCommand{\ansty}{}{\ansTy}
+\NewDocumentCommand{\yesex}{}{\yesEx*}
+\NewDocumentCommand{\noex}{}{\noEx*}
+
+\NewDocumentCommand{\prodty}{m o m}{\sigTy*{#1}[#2]{#3}}
+\NewDocumentCommand{\pairex}{m m}{\pairEx*{#1}{#2}}
+\NewDocumentCommand{\fstex}{m}{\prodgEx*<1>{#1}}
+\NewDocumentCommand{\sndex}{m}{\projEx*<2>{#1}}
+\NewDocumentCommand{\projex}{m m}{\projEx*<#1>{#2}}
+
+\NewDocumentCommand{\sumty}{m m}{\sumTy*{#1}{#2}}
+\NewDocumentCommand{\inlex}{m}{\injEx*<1>{#1}}
+\NewDocumentCommand{\inrex}{m}{\injEx*<2>{#1}}
+\NewDocumentCommand{\caseex}{m m m m}{\caseEx*{#2}{#3}{#4}}
+\NewDocumentCommand{\xcaseex}{m m m m m m}{\xcaseEx*{#2}{#3}{#4}{#5}{#6}}
+\NewDocumentCommand{\injex}{m m}{\injEx*<#1>{#2}}
+
+\NewDocumentCommand{\funty}{m o m}{\piTy*{#1}[#2]{#3}}
+\NewDocumentCommand{\expty}{m m}{#2^{#1}}
+\NewDocumentCommand{\arrty}{m o m}{\funty{#1}[#2]{#3}}
+\NewDocumentCommand{\pfunty}{m o m}{\IfValueTF{#2}{\ofTp*{#2}{#1}}{#1}\rightharpoonup #3}
+\NewDocumentCommand{\lamex}{m m m}{\lamEx*{#2}{#3}}
+\NewDocumentCommand{\appex}{m m}{\appEx*{#1}{#2}}
+
+\NewDocumentCommand{\bndnatty}{m}{\A@bt{\O@pn{nat}[#1]}}
+\NewDocumentCommand{\natty}{}{\natTy*}
+\NewDocumentCommand{\zeroex}{}{\zeroEx*}
+\NewDocumentCommand{\succex}{m}{\succEx*{#1}}
+\NewDocumentCommand{\zsex}{m}{\Abt{\Opn{zs}}(#1)}
+\NewDocumentCommand{\recex}{m m m m m}{\natitEx*[#1]{#2}{#3}{#4}{#5}}
+\NewDocumentCommand{\altrecex}{m m m m}{\Abt*{\Opn{rec}}[#1](#2;\Abs(#3){#4})}
+
+\NewDocumentCommand{\conatty}{}{\conatTy*}
+\NewDocumentCommand{\conatgenex}{m m m m}{\genEx*{#2}{#3}{#4}}
+\NewDocumentCommand{\predex}{m}{\Abt{\Opn{pred}}(#1)}
+
+\NewDocumentCommand{\streamty}{}{\streamTy*{}}
+\NewDocumentCommand{\headex}{m}{\Abt*{\Opn{head}}(#1)}
+\NewDocumentCommand{\tailex}{m}{\Abt*{\Opn{tail}}(#1)}
+\NewDocumentCommand{\genex}{m m m m m}{\Abt*{\Opn{gen}}(#1;\Abs(#2){#3};\Abs(#4){#5})}
+
+
+\NewDocumentCommand{\allty}{m m}{\allTy*{#1}{#2}}
+\NewDocumentCommand{\Lamex}{m m}{\tlamEx*{#1}{#2}}
+\NewDocumentCommand{\uLamex}{m}{\Abt{\Opn*{\Lambda}}(#1)}
+\NewDocumentCommand{\Appex}{m m}{\Abt{\Opn{Ap}}(#1; #2)}
+\NewDocumentCommand{\uAppex}{m}{\Abt{\Opn{Ap}}(#1)}
+
+\NewDocumentCommand{\somety}{m m}{\someTy*{#1}{#2}}
+\NewDocumentCommand{\packex}{m m}{\packEx*{#1}{#2}}
+\NewDocumentCommand{\openex}{m m m m m}{\openEx*[][][#1]{#2}{#3}{#4}{#5}}
+
+\NewDocumentCommand{\HT}{s m d()}{\mathop{\textsf{HT}}\nolimits_{#2}\IfBooleanF{#1}{(#3)}}
+\NewDocumentCommand{\HN}{m m m}{\mathsf{HN}^{#1}_{#2}(#3)}
+\NewDocumentCommand{\NN}{m m m}{\mathsf{NN}^{#1}_{#2}(#3)}
+
+\NewDocumentCommand{\jeq}{}{\mathrel{\doteq}}
+\NewDocumentCommand{\exEq}{s D<>{} m m m}{\IfBooleanTF{#1}{\exEq<#2>{#4}{#5}{#3}}{#3\jeq #4\in_{#2} #5}}
+
+\NewDocumentCommand{\jeqv}{}{\mathrel{\equiv}}
+\NewDocumentCommand{\jof}{}{\mathrel{:}}
+\NewDocumentCommand{\eqvOf}{s m m m}{\IfBooleanTF{#1}{\eqvOf{#3}{#4}{#2}}{#2\jeqv #3\jof #4}}
+\NewDocumentCommand{\logeq}{m m m m}{{#3}\jeq {#4}\in{#2}\  [#1]}
+
+\NewDocumentCommand{\betared}{}{\rightarrow_\beta}
+\NewDocumentCommand{\betastar}{}{\mathrel{\rightarrow^\ast_\beta}}
+\NewDocumentCommand{\betaplus}{}{\mathrel{\rightarrow^{+}_\beta}}
+\NewDocumentCommand{\betanorm}{m}{\mathsf{norm}_\beta(#1)}
+\NewDocumentCommand{\betahd}{}{\mathrel{\mapsTo_\beta}}
+\NewDocumentCommand{\betahdstar}{}{\mathrel{\mapsTo_\beta^\ast}}
+\NewDocumentCommand{\betareduct}{}{\mathrel{\downarrow_\beta}}
+\NewDocumentCommand{\betahdnorm}{m}{\mathsf{whnorm}_\beta(#1)}
+
+\NewDocumentCommand{\jin}{}{\in}
+\NewDocumentCommand{\jinExp}{}{\jin}
+\NewDocumentCommand{\jinRet}{}{\mathrel{\widetilde{\in}}}
+\NewDocumentCommand{\jinAcc}{}{\mathrel{\overline{\in}}}
+
+\NewDocumentCommand{\jret}{}{\mathrel{\wavydiv}}
+\NewDocumentCommand{\jacc}{}{\mathrel{\div}}
+
+\NewDocumentCommand{\eqvRet}{s m m m}{\IfBooleanTF{#1}{\eqvRet{#3}{#4}{#2}}{#2\jeqv #3\jret #4}}
+\NewDocumentCommand{\eqvAcc}{s m m m}{\IfBooleanTF{#1}{\eqvAcc{#3}{#4}{#2}}{#2\jeqv #3\jacc #4}}
+
+\NewDocumentCommand{\exIn}{s D<>{} m m}{\IfBooleanTF{#1}{\exIn<#2>{#4}{#3}}{#3\jin_{#2} #4}}
+\NewDocumentCommand{\exComp}{s D<>{} m m}{\IfBooleanTF{#1}{\exComp<#2>{#4}{#3}}{#3\jin_{#2} #4}}
+\NewDocumentCommand{\exRet}{s m m}{\IfBooleanTF{#1}{\exRet{#3}{#2}}{#2\jin \tilde{#3}}}
+\NewDocumentCommand{\exAcc}{s m m}{\IfBooleanTF{#1}{\exAcc{#3}{#2}}{#2\jin \overline{#3}}}
+\NewDocumentCommand{\exState}{s m m}{\IfBooleanTF{#1}{\exState{#3}{#2}}{#2\jin #3}}
+
+\NewDocumentCommand{\exEqComp}{s D<>{} m m m}{\IfBooleanTF{#1}{\exEqComp<#2>{#4}{#5}{#3}}{#3\jeq #4\jin_{#2} #5}}
+\NewDocumentCommand{\exEqRet}{s m m m}{\IfBooleanTF{#1}{\exEqRet{#3}{#4}{#2}}{#2\jeq #3\tilde{\jin} #4}}
+\NewDocumentCommand{\exEqAcc}{s m m m}{\IfBooleanTF{#1}{\exEqAcc{#3}{#4}{#2}}{#2\jeq #3\overline{\jin} #4}}
+\NewDocumentCommand{\exEqState}{s m m m}{\IfBooleanTF{#1}{\exEqState{#3}{#4}{#2}}{#2\jeq #3\jin #4}}
+
+\NewDocumentCommand{\laxty}{m}{\compTy{#1}}
+\NewDocumentCommand{\laxex}{m}{\compEx*{#1}}
+\NewDocumentCommand{\retex}{m}{\retEx*{#1}}
+\NewDocumentCommand{\bndex}{m m m m}{\bndEx*[#1]{#2}{#3}{#4}}
+\NewDocumentCommand{\retcmd}{m}{\retCmd*{#1}}
+\NewDocumentCommand{\bndcmd}{m m m}{\Abt{\Opn{bnd}}(#1\sep{}\Abs(#2){#3})}
+\NewDocumentCommand{\seqcmd}{m o m}{\IfValueTF{#2}{\bndcmd{#1}{#2}{#3}}{\Abt{\Opn{seq}}(#1\sep{} #3)}}
+\NewDocumentCommand{\empst}{}{\empStk*}
+\NewDocumentCommand{\consst}{m m m}{\extStk*{#1}{\Abs(#2){#3}}}
+
+\NewDocumentCommand{\contty}{m}{\contTy{#1}}
+\NewDocumentCommand{\contex}{m}{\contEx*{#1}}
+
+\NewDocumentCommand{\letcccmd}{m m}{\Abt{\Opn{letcc}(\Abs(#1){#2})}}
+\NewDocumentCommand{\throwcmd}{m m}{\Abt{\Opn{throw}(#1;#2)}}
+
+\NewDocumentCommand{\exinEx}{d<> o m m}{\IfValueT{#2}{#2\mathrel{\gg^{#1}}} #4\jin #3\IfValueF{#2}{\;[#1]}}
+\NewDocumentCommand{\exeqEx}{d<> o m m m}{\IfValueT{#2}{#2\mathrel{\gg^{#1}}} #4 \jeq #5\jin #3\IfValueF{#2}{\;[#1]}}
+\NewDocumentCommand{\exeqCmd}{d<> o m m m}{\IfValueT{#2}{#2\mathrel{\gg^{#1}}} #4 \jeq #5 \mathrel{\widetilde{\jin}} #3\IfValueF{#2}{\;[#1]}}
+
+\NewDocumentCommand{\stepCmd}{s r<> m}{\IfBooleanTF{#1}{\Opn{step}^{#2}(#3)}{\Abt{\Opn{step}}<#2>(#3)}}
+\NewDocumentCommand{\stepcmd}{r<> m}{\stepCmd*<#1>{#2}}
+\NewDocumentCommand{\noArgStep}{r<>}{\Opn{step}^{#1}}
+\NewDocumentCommand{\stepEx}{s m}{\Opn{step}^{#2}}
+\NewDocumentCommand{\extph}{s}{\Opn{BEH}}
+\NewDocumentCommand{\trueph}{s}{\Opn*{\top}}
+\NewDocumentCommand{\entailsCost}{o r<>}{\IfValueTF{#1}{\vdash^{#2}_{#1}}{\vdash^{#2}}}
+\NewDocumentCommand{\isFinal}{o m}{#2\,\jdg@Syn{final}\IfValueT{#1}{_{#1}}}
+\NewDocumentCommand{\costSuspTyp}{m o}{\A@bt{\O@pn{susp}}\IfValueT{#2}{^{#2}}(#1)}
+
+\NewDocumentCommand{\xSub}{m m}{\Sub{#1}{#2}{X}}
+\NewDocumentCommand{\forceex}{m}{\forceEx*{#1}}
+
+\NewDocumentCommand{\bndNatRec@Cst}{m m m m m}{\O@pn{rec}\,#1\,\{\,#2\mid \A@bs(#3.#4){#5} \,\}}
+\NewDocumentCommand{\bndNatRec@Abt}{m m m m m m m}{\A@bt{\O@pn{rec}}[\A@bs(#1){#2}](#3\@sep #4\@sep \A@bs(#5.#6){#7})}
+\NewDocumentCommand{\bndNatRecEx}{s o o m m m m m}{\IfBooleanTF{#1}{\bndNatRec@Cst{#4}{#5}{#6}{#7}{#8}}{\bndNatRec@Abt{#2}{#3}{#4}{#5}{#6}{#7}{#8}}}
+
+% Runtime Syntax
+\NewDocumentCommand{\runtimeBndNat}{m m m m m m m m}{\A@bt{\O@pn{rec}}[#1\@sep #2\@sep #3](#4\@sep #5\@sep \A@bs(#6.#7){#8})}
+\NewDocumentCommand{\runtimeBnd}{m m m m}{\O@pn{bnd}[#1](#2\@sep \A@bs(#3){#4})}
+\NewDocumentCommand{\compileComp}{m}{|#1|}
+
+\NewDocumentCommand{\bndSuccEx}{m m}{\A@bt{\O@pn{succ}}^{#1}(#2)}
+\RenewDocumentCommand{\arr@Abt}{o m m}{\A@bt{\O@pn{fun}}\IfBooleanT{#1}{[#1]}(#2\@sep #3)}
+\RenewDocumentCommand{\arr@Cst}{o m m}{\IfNoValueTF{#1}{#2\to #3}{#2 \to^{#1} #3}}
+\RenewDocumentCommand{\arrTy}{s o m m}{\IfBooleanTF{#1}{\IfNoValueTF{#2}{\arr@Cst{#3}{#4}}{\arr@Cst[#2]{#3}{#4}}}{\IfNoValueTF{#2}{\arr@Abt{#3}{#4}}{\arr@Abt[#2]{#3}{#4}}}}
+
+
+% \NewDocumentCommand{\symFutTy}{ m m }{\A@bt{\O@pn{fut}}[#1](#2)}
+% \NewDocumentCommand{\symFutEx}{ m m }{\A@bt{\O@pn{fut}}[#1](#2)}
+% \NewDocumentCommand{\futRefEx}{ m }{\A@bt{\O@pn{fut}}(#1)}
+
+
+% % explicit cases
+% \NewDocumentCommand{\xcase@Abt}{m m m m m m m m}{\A@bt{\O@pn{case}}[#1\@sep #2\@sep #3](#4\@sep \A@bs(#5){#6}\@sep \A@bs(#7){#8})}
+% \NewDocumentCommand{\xcase@Cst}{m m m m m}{\O@pn{case}\,#1\,\{\,\A@bs(#2){#3} \mid \A@bs(#4){#5} \,\}}
+% \NewDocumentCommand{\xcaseEx}{s O{\tau_1} O{\tau_2} O{\rho} m m m m m}{\IfBooleanTF{#1}{\xcase@Cst{#5}{#6}{#7}{#8}{#9}}{\xcase@Abt{#2}{#3}{#4}{#5}{#6}{#7}{#8}{#9}}}
+% % generated cases
+% \NewDocumentCommand{\caseEx}{s O{\tau} O{\rho} m m m}{\IfBooleanTF{#1}{\xcase@Cst{#4}{#5_1}{#6_1}{#5_2}{#6_2}}{\xcase@Abt{{#2}_1}{{#2}_2}{#3}{#4}{#5_1}{#6_1}{#5_2}{#6_2}}}
+% \NewDocumentCommand{\cmdCaseEx}{m m m}
+
+\makeatother
+

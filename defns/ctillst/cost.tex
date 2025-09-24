@@ -1,0 +1,12 @@
+
+\DeclareDocumentCommand{\zerocost}{}{\mathbf{0}}
+\DeclareDocumentCommand{\unitcost}{}{\mathbf{1}}
+\DeclareDocumentCommand{\parcost}{m m}{{#1}\otimes{#2}}
+\DeclareDocumentCommand{\seqcost}{m m}{{#1}\oplus{#2}}
+\NewDocumentCommand{\absCost}{}{{\mbox{\textcent}}}
+
+%% "Denotes"
+\DeclareDocumentCommand{\dnt}{d<> m}{%
+\IfNoValueTF{#1}%
+{\llbracket{#2}\rrbracket}%
+{\llbracket{#2}\rrbracket_{#1}}}

@@ -1,0 +1,5 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tillst-legacy-sensor}[\texttt{TILLST} Legacy Definitions: Sensor example]
+
+\DeclareDocumentCommand{\SensorProcAbt}{ m m m }{\OpABT{\kw{sensor}}{#1;#2[#3]}}
+\DeclareDocumentCommand{\SensorProc}{ m m m }{\SensorProcAbt{#1}{#2}{#3}}

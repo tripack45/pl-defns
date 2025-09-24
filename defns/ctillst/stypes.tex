@@ -1,0 +1,38 @@
+%% Session Types
+\makeatletter
+
+%% Mark a variable for binding
+\NewDocumentCommand{\mktv}{m}{\underline{#1}}
+
+%% Arguments: Name / Type
+\NewDocumentCommand{\unaryTyOp@Abt}{m m}{\A@bt{#1}(#2)}
+\NewDocumentCommand{\unaryTyOp@Cst}{m m}{{#1}\,{#2}}
+\NewDocumentCommand{\unaryTy}{m m m m}{\IfBooleanTF{#1}{\unaryTyOp@Cst{#3}{#4}}{\unaryTyOp@Abt{#2}{#4}}}
+
+\NewDocumentCommand{\prefixBinTyOp@Abt}{m m m}{\A@bt{#1}({#2};{#3})}
+\NewDocumentCommand{\prefixBinTyOp@Cst}{m m m}{{#1}\,\{{#2}, {#3}\}}
+\NewDocumentCommand{\prefixBinTy}{m m m m m}{\IfBooleanTF{#1}{\prefixBinTyOp@Cst{#3}{#4}{#5}}{\prefixBinTyOp@Abt{#2}{#4}{#5}}}
+
+\NewDocumentCommand{\infixBinTyOp@Abt}{m m m}{\A@bt{#1}({#2};{#3})}
+\NewDocumentCommand{\infixBinTyOp@Cst}{m m m}{{#2}{#1}{#3}}
+\NewDocumentCommand{\infixBinTy}{m m m m m}{\IfBooleanTF{#1}{\infixBinTyOp@Cst{#3}{#4}{#5}}{\infixBinTyOp@Abt{#2}{#4}{#5}}}
+
+\NewDocumentCommand{\bangTy}{s r<> m}{\unaryTy{#1}{\Opn{bang}\minor@bracks{#2}}{\Opn{!}_{#2}\cdot}{#3}}
+\NewDocumentCommand{\queryTy}{s r<> m}{\unaryTy{#1}{\Opn{query}\minor@bracks{#2}}{\Opn{?}_{#2}\cdot}{#3}}
+\NewDocumentCommand{\exChTy}{s m m}{\prefixBinTy{#1}{\Opn{amp}}{\Opn{&}}{#2}{#3}}
+\NewDocumentCommand{\inChTy}{s m m}{\prefixBinTy{#1}{\Opn{oplus}}{\oplus}{#2}{#3}}
+% \DeclareDocumentCommand{\tensorTy}{s m m}{\infixBinTy{#1}{\Opn{tensor}}{\otimes}{#2}{#3}}
+\NewDocumentCommand{\larrTy}{s m m}{\infixBinTy{#1}{\Opn{larr}}{\multimap}{#2}{#3}}
+% \NewDocumentCommand{\stopTy}{s}{\IfBooleanTF{#1}{\mathbf{1}}{\Opn{stop}}}
+
+\NewDocumentCommand{\tprop}{m m}{\IfNoValueTF{#1}{#2}{\Abs(#1){#2}}}
+
+\NewDocumentCommand{\tbangTy}{s r<> d() m m}{\unaryTy{#1}{\Opn{bang}\minor@bracks{#2;\tprop{#3}{#4}}}{\Opn{!}^{\tprop{#3}{#4}}_{#2}\cdot}{#5}}
+\NewDocumentCommand{\tqueryTy}{s r<> d() m m}{\unaryTy{#1}{\Opn{query}\minor@bracks{#2;\tprop{#3}{#4}}}{\Opn{?}^{\tprop{#3}{#4}}_{#2}\cdot}{#5}}
+\NewDocumentCommand{\texChTy}{s m m m m}{\prefixBinTy{#1}{\Opn{amp}\minor@bracks{\Abs(#2){#3}}}{\Opn{\&}^{\Abs(#2){#3}}}{#4}{#5}}
+\NewDocumentCommand{\tinChTy}{s m m m m}{\prefixBinTy{#1}{\Opn{oplus}\minor@bracks{\Abs(#2){#3}}}{\oplus^{\Abs(#2){#3}}}{#4}{#5}}
+\NewDocumentCommand{\ttensorTy}{s m m m m}{\infixBinTy{#1}{\Opn{tensor}\minor@bracks{\Abs(#2){#3}}}{\otimes^{\Abs(#2){#3}}}{#4}{#5}}
+\NewDocumentCommand{\tlarrTy}{s m m m m}{\infixBinTy{#1}{\Opn{larr}\minor@bracks{\Abs(#2){#3}}}{\multimap^{\Abs(#2){#3}}}{#4}{#5}}
+\NewDocumentCommand{\tunitTy}{s m m}{\IfBooleanTF{#1}{\mathbf{1}^{\Abs(#2){#3}}}{\Opn{stop}\minor@bracks{\Abs(#2){#3}}}}
+
+\makeatother
