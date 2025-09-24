@@ -1,3 +1,6 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ctillst-syntax}[\texttt{CTILLST} Definitions: Process Syntax]
+
 \makeatletter
 
 %% Fragments of the syntax
@@ -126,4 +129,37 @@
 {\IfNoValueF{#2}{{#2}\mathbin{:}}\ConfAt{#3}{#4}  \MultiStepsTo{} \ConfAt{#5}{#6}}%
 }
 
+%% Additional definitions that needs to be deprecated
+
+% eval process
+\DeclareDocumentCommand{\tpevalcst}{ m m m m }{\at{#2}\, \bindValue{#3}{\Opn{eval}\parens{#1}\mathbin{;} #4}}
+\DeclareDocumentCommand{\tpevalabt}{ m m m m }{\Opn{eval}^{#2}\parens{#1} \mathbin{;} \Abs(#3){#4}}
+\DeclareDocumentCommand{\tpEvalProc}{s m m m m}{\IfBooleanTF{#1}{\tpevalcst{#2}{#3}{#4}{#5}}{\tpevalabt{#2}{#3}{#4}{#5}}}
+
+%% binding
+\DeclareDocumentCommand{\bindValue}{m m}{{#1} \coloneqq #2}
+\DeclareDocumentCommand{\bindClose}{m}{\Opn{cls} \coloneqq #1}
+\DeclareDocumentCommand{\bindChannel}{m m}{#1 \coloneqq #2}
+\DeclareDocumentCommand{\bindSeq}{m m m}{(#1 \sep #2) \coloneqq #3}
+
+%% Spawn proc 
+\DeclareDocumentCommand{\tpspawnproccst}{ m m m m }{\at{#1}\, \bindChannel{#3}{\Opn{spawn}\parens{#2} \mathbin{;} #4}}
+\DeclareDocumentCommand{\tpspawnprocabt}{ m m m m }{\Opn{spawn}^{#1}{#2}\mathbin{;} {\Abs(#3){#4}}}
+\DeclareDocumentCommand{\tpSpawnProc}{s m m m m}{\IfBooleanTF{#1}{\tpspawnproccst{#2}{#3}{#4}{#5}}{\tpspawnprocabt{#2}{#3}{#4}{#5}}}
+
+%% fInit
+\DeclareDocumentCommand{\finitabt}{ }{\Opn{init}}
+\DeclareDocumentCommand{\finitcst}{ }{\Opn{init}}
+\DeclareDocumentCommand{\fInit}{s}{\IfBooleanTF{#1}{\finitcst}{\finitabt}}
+
+\DeclareDocumentCommand{\fshiftabt}{ m m }{\OpABT{\kw{shift}}{{#1};{#2}}}
+\DeclareDocumentCommand{\fshiftcst}{ m m }{{#1} + {#2}}
+\DeclareDocumentCommand{\fShift}{s m m}{\IfBooleanTF{#1}{\fshiftcst{#2}{#3}}{\fshiftabt{#2}{#3}}}
+
+%% Forward
+\DeclareDocumentCommand{\tpfwdabt}{ m m }{\Opn{fwd}^{#1}{#2}}
+\DeclareDocumentCommand{\tpfwdcst}{ m m }{\at{#1}\, \Opn{fwd}\parens{#2}}
+\DeclareDocumentCommand{\tpFwd}{s m m}{\IfBooleanTF{#1}{\tpfwdcst{#2}{#3}}{\tpfwdabt{#2}{#3}}}
+
 \makeatother
+

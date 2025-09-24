@@ -178,6 +178,8 @@
 
 \DeclareDocumentCommand{\Interp}{m}{\left\lceil{#1}\right\rceil}
 
+\DeclareDocumentCommand{\AddDur}{m m}{{#1} + {#2}}
+
 %% Forward and Cut Compatibility
 \DeclareDocumentCommand{\FwdComp}{m m m}{{#1}\rtimes{#2}\mathrel{@}{#3}}
 \DeclareDocumentCommand{\CutComp}{m m m}{{#1}\ltimes{#2}\mathrel{@}{#3}}

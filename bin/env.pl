@@ -14,6 +14,8 @@ my @PATHS=(
 
     # TILLST of POPL'25 and Toplas'25
     catfile($ROOT, 'defns/', 'tillst-legacy/'),
+    # CTILLST of POPL'26 (Submission)
+    catfile($ROOT, 'defns/', 'ctillst/'),
 );
 
 # Add to search path
