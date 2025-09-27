@@ -11,6 +11,8 @@ my @PATHS=(
     catfile($ROOT, 'defns/', 'pl-syntax/'),
     catfile($ROOT, 'defns/', 'pfpl-defns/'),
     catfile($ROOT, 'defns/', 'styled-vars/'),
+    # Shared definitions
+    catfile($ROOT, 'defns/', 'shared/'),
 
     # TILLST of POPL'25 and Toplas'25
     catfile($ROOT, 'defns/', 'tillst-legacy/'),

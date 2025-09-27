@@ -1,0 +1,24 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{apx-ref}[References to Appendicies]
+
+\RequirePackage{xparse}
+
+%% Reference to Appandix
+\newif\ifappendix
+
+\NewDocumentCommand{\ifextendedtf}{m m}{\ifappendix{#1}\else{#2}\fi}
+\NewDocumentCommand{\ifextended}{m}{\ifappendix{#1}\fi}
+
+\NewDocumentCommand{\apxname}{s}{%
+  \IfBooleanTF{#1}%
+    {the extended version of this paper~\citep{fullpaper}}%
+    {the full paper~\citep{fullpaper}}%
+}
+
+\NewDocumentCommand{\refapx}{s o}{%
+  \ifappendix%
+    \IfBooleanTF{#1}{the appendix}{\Cref{#2}}%
+  \else%
+    \IfBooleanTF{#1}{\apxname*}{\apxname}\fi%
+  \xspace%
+}
