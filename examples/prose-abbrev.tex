@@ -1,0 +1,34 @@
+\documentclass[10pt]{article}
+
+\usepackage{prose-abbrev}
+\usepackage{xspace}
+
+\NewDocumentCommand{\package}{}{\texttt{prose-abbrev}\xspace}
+
+\title{\package Test Document}%
+\author{Yue Yao}
+\date{\today}
+
+\begin{document}
+\maketitle{}
+
+This document tests the \package package. It defines a set of abbreviations for writing, 
+including: 
+
+\begin{itemize}
+\item \emph{Exempli gratia} (\eg),
+\item \emph{Respectively} (\resp) and its non-comma-terminated variant (\respb),
+\item \emph{Id est} (\ie),
+\item \emph{Et cetera} {\etc},
+\item \emph{Also known as} (\aka),
+\end{itemize}
+
+and for math presentation: 
+
+\begin{itemize}
+\item \emph{Such that} ($\st$),
+\item \emph{And that} ($\andthat$),
+\item \emph{Where} ($\where$).
+\end{itemize}
+
+\end{document}
