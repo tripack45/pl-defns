@@ -14,6 +14,8 @@ sub pl_defns_setenv() {
         catfile($ROOT, 'defns/', 'styled-vars/'),
         # Shared definitions
         catfile($ROOT, 'defns/', 'shared/'),
+        # Various Calculi
+        catfile($ROOT, 'defns/', 'calculi/'),
 
         # TILLST of POPL'25 and Toplas'25
         catfile($ROOT, 'defns/', 'tillst-legacy/'),
