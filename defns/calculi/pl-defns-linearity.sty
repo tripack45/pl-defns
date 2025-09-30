@@ -1,9 +1,15 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{pl-defns-linearity}[\texttt{pl\-defns\-linearity} Definitions for linear calculus]
 
+\RequirePackage{xparse}
+
 \IfClassLoadedTF{acmart}{}{
     \RequirePackage{amssymb}
 }
+
+\RequirePackage[abt]{pl-syntax}
+
+\makeatletter
 
 %% Arguments: Name / Type
 \NewDocumentCommand{\unaryTyOp@Abt}{m m}{\A@bt{#1}(#2)}
@@ -22,6 +28,27 @@
 \NewDocumentCommand{\optensor}{}{\otimes}
 \NewDocumentCommand{\oplolli}{}{\multimap}
 \NewDocumentCommand{\opwith}{}{\mathop{\&}}
+\NewDocumentCommand{\opplus}{}{+}
+\NewDocumentCommand{\optimes}{}{\times}
+\NewDocumentCommand{\optop}{}{\top}
+\NewDocumentCommand{\opbot}{}{\bot}
+
+\NewDocumentCommand{\opPiOne}{}{\pi_1}
+\NewDocumentCommand{\opPiTwo}{}{\pi_2}
+\NewDocumentCommand{\opInOne}{}{i_1}
+\NewDocumentCommand{\opInTwo}{}{i_2}
 
 \NewDocumentCommand{\larrTy}{s m m}{\infixBinTy{#1}{\Opn{larr}}{\oplolli}{#2}{#3}}
 \NewDocumentCommand{\withTy}{s m m}{\infixBinTy{#1}{\Opn{with}}{\opwith}{#2}{#3}}
+
+\NewDocumentCommand{\optionally@Arg}{m m}{\IfNoValueTF{#2}{#1}{\A@bt{#1}(#2)}}
+
+
+
+\NewDocumentCommand{\piOneEx}{s m}{\optionally@Arg{\opPiOne}{#2}}
+\NewDocumentCommand{\piTwoEx}{s m}{\optionally@Arg{\opPiTwo}{#2}}
+
+\NewDocumentCommand{\inOneEx}{s m}{\optionally@Arg{\opInOne}{#2}}
+\NewDocumentCommand{\inTwoEx}{s m}{\optionally@Arg{\opInTwo}{#2}}
+
+\makeatother
