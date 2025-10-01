@@ -1,0 +1,37 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{pl-defns-lr}[Definitions for logical relations]
+
+\RequirePackage{xspace}
+\RequirePackage{amsmath} %% For \quad command
+
+\makeatletter
+
+%% A thing with subsript and/or modifications 
+%% 
+\DeclareDocumentCommand{\Modifies@}{m m m}{%
+{{#1}\IfNoValueF{#2}{_{#2}}\IfNoValueF{#3}{^{#3}}}%
+}
+
+%% Generic LR definition
+%% Arguments: Star [Proof] {Term} [Family] {Type}
+%% Default: Type is in interpretation brackets, family proceeds brackets
+%%          p : M \in F[[ A ]]
+%% Starred: Type is alone, family indexes membership operator
+%%          p : M \in_F A 
+%% Proof argument is optional
+\DeclareDocumentCommand{\InLR@}{m m m m m}{%
+\IfNoValueF{#2}{{#2}\mathbin{:}}{#3}%
+\IfBooleanTF{#1}%
+{\IfNoValueTF{#4}{\in}{\in_{#4}}{#5}}%
+{\in \IfNoValueF{#4}{#4}\llbracket{#5}\rrbracket}%
+}
+
+%% Actually mark arguments optional
+\DeclareDocumentCommand{\InLR}{s o m d<> m}{\InLR@{#1}{#2}{#3}{#4}{#5}}
+
+% Proof irrelevant 
+\DeclareDocumentCommand{\lrEntails}{m}{\gg{#1}}
+\DeclareDocumentCommand{\lrIsOf}{m m}{{#1}\in{#2}}
+
+% Functional Logical Relation
+\makeatother

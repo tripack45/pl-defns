@@ -33,10 +33,14 @@
 \NewDocumentCommand{\optop}{}{\top}
 \NewDocumentCommand{\opbot}{}{\bot}
 
-\NewDocumentCommand{\opPiOne}{}{\pi_1}
-\NewDocumentCommand{\opPiTwo}{}{\pi_2}
-\NewDocumentCommand{\opInOne}{}{i_1}
-\NewDocumentCommand{\opInTwo}{}{i_2}
+
+\NewDocumentCommand{\opPi}{d<>}{\pi_{#1}}
+\NewDocumentCommand{\opIn}{d<>}{i_{#1}}
+
+\NewDocumentCommand{\opPiOne}{}{\opPi<1>}
+\NewDocumentCommand{\opPiTwo}{}{\opPi<2>}
+\NewDocumentCommand{\opInOne}{}{\opIn<1>}
+\NewDocumentCommand{\opInTwo}{}{\opIn<2>}
 
 \NewDocumentCommand{\larrTy}{s m m}{\infixBinTy{#1}{\Opn{larr}}{\oplolli}{#2}{#3}}
 \NewDocumentCommand{\withTy}{s m m}{\infixBinTy{#1}{\Opn{with}}{\opwith}{#2}{#3}}
@@ -44,6 +48,8 @@
 \NewDocumentCommand{\optionally@Arg}{m m}{\IfNoValueTF{#2}{#1}{\A@bt{#1}(#2)}}
 
 
+\NewDocumentCommand{\piEx}{s d<> m}{\optionally@Arg{\opPi<#2>}{#3}}
+\DeclareDocumentCommand{\inEx}{s d<> m}{\optionally@Arg{\opIn<#2>}{#3}}
 
 \NewDocumentCommand{\piOneEx}{s m}{\optionally@Arg{\opPiOne}{#2}}
 \NewDocumentCommand{\piTwoEx}{s m}{\optionally@Arg{\opPiTwo}{#2}}
