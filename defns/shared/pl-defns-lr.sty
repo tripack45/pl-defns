@@ -35,4 +35,18 @@
 \DeclareDocumentCommand{\lrIsOf}{m m}{{#1}\in{#2}}
 
 % Functional Logical Relation
+\DeclareDocumentCommand{\subsup@}{m m m}{%
+\IfNoValueTF{#2}%
+{\IfNoValueTF{#3}{#1}{{#1}^{#3}}}%
+{\IfNoValueTF{#3}{{#1}_{#2}}{{#1}_{#2}^{#3}}}%
+}
+
+\DeclareDocumentCommand{\EntailsF}{m m m}{%
+\IfBooleanTF{#1}%
+{\mathrel{\subsup@{\gg}{#2}{#3}}}%
+{\mathrel{\subsup@{\vDash}{#2}{#3}}}%
+}
+\DeclareDocumentCommand{\EntailsSub}{s m d<>}{\EntailsF{#1}{#2}{#3}}
+\DeclareDocumentCommand{\Entails}{s o d<>}{\EntailsF{#1}{#2}{#3}}
+
 \makeatother
