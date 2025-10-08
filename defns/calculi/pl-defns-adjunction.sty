@@ -1,0 +1,56 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{pl-defns-adjunction}[\texttt{pl\-defns\-adjunction} Definitions for adjunctive calculi]
+
+\RequirePackage{xparse}
+\RequirePackage{pl-defns-tyop}
+
+\makeatletter
+
+%% Conventions : F -| G, Down -| Up, Free -| Under
+%% 
+
+\NewDocumentCommand{\opFFun}{}{\O@pn{F}}
+\NewDocumentCommand{\opGFun}{}{\O@pn{G}}
+
+\NewDocumentCommand{\opDown}{}{\downarrow}
+\NewDocumentCommand{\opUp}{}{\uparrow}
+
+\NewDocumentCommand{\opDownFun}{}{\O@pn{Down}}
+\NewDocumentCommand{\opUpFun}{}{\O@pn{Up}}
+
+\NewDocumentCommand{\opFree}{}{\O@pn{F}}
+\NewDocumentCommand{\opUnder}{}{\O@pn{U}}
+
+\NewDocumentCommand{\FTy}{s m}{\unaryTy{#1}{\opDown}{\opFFun}{#2}}
+\NewDocumentCommand{\GTy}{s m}{\unaryTy{#1}{\opUp}{\opGFun}{#2}}
+
+\NewDocumentCommand{\FreeTy}{s m}{\unaryTy{#1}{\opDown}{\opFree}{#2}}
+\NewDocumentCommand{\UnderTy}{s m}{\unaryTy{#1}{\opUp}{\opUnder}{#2}}
+
+\NewDocumentCommand{\DownTy}{s m}{\unaryTy{#1}{\opDown}{\opDownFun}{#2}}
+\NewDocumentCommand{\UpTy}{s m}{\unaryTy{#1}{\opUp}{\opUpFun}{#2}}
+
+\NewDocumentCommand{\opPersist}{}{\O@pn{persist}}
+\NewDocumentCommand{\opPBind}{}{\O@pn{pbind}}
+\NewDocumentCommand{\opPromote}{}{\O@pn{promote}}
+\NewDocumentCommand{\opDerelict}{}{\O@pn{derelict}}
+
+\NewDocumentCommand{\persistEx}{s m}{%
+\IfBooleanTF{#1}{\A@bt{\opPersist}(#2)}{\A@bt{\OpPersist}(#2)}%
+}
+
+\NewDocumentCommand{\pbindEx}{s o o m m m}{%
+\IfBooleanTF{#1}%
+{\@kw{pbind}\,#5\leftarrow #4\@sep* #6}%
+{\Abt@{#1}{\O@pn{pbind}}[#2\@sep #3](#4\@sep \A@bs(#5){#6})}%
+}
+
+\NewDocumentCommand{\promoteEx}{s m}{%
+\IfBooleanTF{#1}{\A@bt{\opPromote}(#2)}{\A@bt{\opPromote}{#2}}%
+}
+
+\NewDocumentCommand{\derelictEx}{s m}{%
+\IfBooleanTF{#1}{\A@bt{\opDerelict}(#2)}{\A@bt{\opDerelict}{#2}}%
+}
+
+\makeatother
