@@ -18,6 +18,7 @@
 \NewDocumentCommand{\optimes}{}{\times}
 \NewDocumentCommand{\optop}{}{\top}
 \NewDocumentCommand{\opbot}{}{\bot}
+\NewDocumentCommand{\oplcont}{}{\lnot}
 
 
 \NewDocumentCommand{\opPi}{d<>}{\pi_{#1}}
@@ -31,6 +32,8 @@
 \NewDocumentCommand{\larrTy}{s m m}{\infixBinTy{#1}{\Opn{larr}}{\oplolli}{#2}{#3}}
 \NewDocumentCommand{\withTy}{s m m}{\infixBinTy{#1}{\Opn{with}}{\opwith}{#2}{#3}}
 
+\NewDocumentCommand{\lcontTy}{s m}{\unaryTy{#1}{\Opn{lcont}}{\oplcont}{#2}}
+
 \NewDocumentCommand{\optionally@Arg}{m m}{\IfNoValueTF{#2}{#1}{\A@bt{#1}(#2)}}
 
 
@@ -42,5 +45,6 @@
 
 \NewDocumentCommand{\inOneEx}{s m}{\optionally@Arg{\opInOne}{#2}}
 \NewDocumentCommand{\inTwoEx}{s m}{\optionally@Arg{\opInTwo}{#2}}
+
 
 \makeatother
