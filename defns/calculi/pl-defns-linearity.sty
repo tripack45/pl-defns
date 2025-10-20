@@ -18,7 +18,6 @@
 \NewDocumentCommand{\optimes}{}{\times}
 \NewDocumentCommand{\optop}{}{\top}
 \NewDocumentCommand{\opbot}{}{\bot}
-\NewDocumentCommand{\oplcont}{}{\lnot}
 
 
 \NewDocumentCommand{\opPi}{d<>}{\pi_{#1}}
@@ -36,7 +35,6 @@
 
 \NewDocumentCommand{\optionally@Arg}{m m}{\IfNoValueTF{#2}{#1}{\A@bt{#1}(#2)}}
 
-
 \NewDocumentCommand{\piEx}{s d<> m}{\optionally@Arg{\opPi<#2>}{#3}}
 \DeclareDocumentCommand{\inEx}{s d<> m}{\optionally@Arg{\opIn<#2>}{#3}}
 
@@ -46,5 +44,11 @@
 \NewDocumentCommand{\inOneEx}{s m}{\optionally@Arg{\opInOne}{#2}}
 \NewDocumentCommand{\inTwoEx}{s m}{\optionally@Arg{\opInTwo}{#2}}
 
+
+\NewDocumentCommand{\opLLetcc}{}{\O@pn{lletcc}}
+\NewDocumentCommand{\opLThrow}{}{\O@pn{lthrow}}
+
+\NewDocumentCommand{\lletccEx}{s O{\tau} m m}{\Abt@{#1}{\opLLetcc}[#2](\A@bs(#3){#4})}
+\NewDocumentCommand{\lthrowEx}{s O{\tau} O{\rho} m m}{\Abt@{#1}{\opLThrow}[#2\@sep #3](#4, #5)}
 
 \makeatother
