@@ -24,11 +24,14 @@
 \NewDocumentCommand{\opPi}{d<>}{\pi_{#1}}
 \NewDocumentCommand{\opIn}{d<>}{i_{#1}}
 
-
 \NewDocumentCommand{\opPiOne}{}{\opPi<1>}
 \NewDocumentCommand{\opPiTwo}{}{\opPi<2>}
 \NewDocumentCommand{\opInOne}{}{\opIn<1>}
 \NewDocumentCommand{\opInTwo}{}{\opIn<2>}
+
+\NewDocumentCommand{\opLLetcc}{}{\O@pn{lletcc}}
+\NewDocumentCommand{\opLThrow}{}{\O@pn{lthrow}}
+\NewDocumentCommand{\opLContVal}{}{\O@pn{lcont}}
 
 \NewDocumentCommand{\larrTy}{s m m}{\infixBinTy{#1}{\Opn{larr}}{\oplolli}{#2}{#3}}
 \NewDocumentCommand{\withTy}{s m m}{\infixBinTy{#1}{\Opn{with}}{\opwith}{#2}{#3}}
@@ -47,10 +50,8 @@
 \NewDocumentCommand{\inTwoEx}{s m}{\optionally@Arg{\opInTwo}{#2}}
 
 
-\NewDocumentCommand{\opLLetcc}{}{\O@pn{lletcc}}
-\NewDocumentCommand{\opLThrow}{}{\O@pn{lthrow}}
-
 \NewDocumentCommand{\lletccEx}{s O{\tau} m m}{\Abt@{#1}{\opLLetcc}[#2](\A@bs(#3){#4})}
-\NewDocumentCommand{\lthrowEx}{s O{\tau} O{\rho} m m}{\Abt@{#1}{\opLThrow}[#2\@sep #3](#4, #5)}
+\NewDocumentCommand{\lthrowEx}{s O{\tau} m m}{\Abt@{#1}{\opLThrow}[#2](#3, #4)}
+\NewDocumentCommand{\lcontEx}{s O{\tau} m}{\Abt@{#1}{\opLContVal}[#2](#3)}
 
 \makeatother
