@@ -1,0 +1,33 @@
+# HOW TO USE THIS FILE (LOCAL SETUP): 
+# 
+# 1. Copy and place this file into your project root along side your main tex file 
+#    and rename it to `latexmkrc`.
+#         cp latexmkrc.project $PATH_TO_TEX/latexmkrc
+# 
+# 2. Modify the definition of "PL_DEFNS_ROOT" to point to root of this repository
+# 3. Build your tex project with `latexmk`
+# 
+# `latexmk` should automatically pick-up this file, and make the packages provided 
+# by `pl-defns` available for `\usepackage{...}` directive. 
+#
+# Refer to the project readme.md for instructions to setup the repo globally.
+
+# Sets up search path for defns 
+if (defined $GLOBAL_PL_DEFNS_ROOT) {
+    $PL_DEFNS_ROOT=$GLOBAL_PL_DEFNS_ROOT
+} else {
+    $PL_DEFNS_ROOT="path/to/pl-defns";
+}
+
+use File::Spec::Functions;
+# Try to load the env file
+do (catfile($PL_DEFNS_ROOT, "bin/env.pl"));
+# Check the file is successfully loaded.
+if ($@) {
+    print $@;
+    die "'env.pl failed to execute.'";
+}
+# Check the file does exists.
+if ($!) {
+    die "'$!'";
+}

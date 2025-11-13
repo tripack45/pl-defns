@@ -1,0 +1,2 @@
+# Sets up search path for defns
+$GLOBAL_PL_DEFNS_ROOT="$PATH_TO_PL_DEFNS";
