@@ -1,6 +1,6 @@
 [submodule "defns/pfpl-defns"]
 	path = defns/pfpl-defns
-	url = git@github.com:tripack45/pfpl-defns.git
+	url = https://github.com/tripack45/pfpl-defns.git
 [submodule "defns/pl-syntax"]
 	path = defns/pl-syntax
 	url = https://github.com/RobertHarper/pl-syntax.git
