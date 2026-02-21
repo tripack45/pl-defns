@@ -1,0 +1,46 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{envar}[Package to access environment variables]
+
+\RequirePackage{xparse}
+\RequirePackage{expl3}
+
+\ExplSyntaxOn
+\makeatletter
+
+\tl_new:N \l_septatrix_env_tl
+
+%% This reads envar #2 and returns, if it is empty #1, else itself
+\cs_new_protected:Npn \__envar_getenv:n #1
+  {
+    \sys_get_shell:nnN { kpsewhich ~ --var-value ~ #1 }
+      { \int_set:Nn \tex_endlinechar:D { -1 } }
+      \l_septatrix_env_tl
+    % Trim whitespace characters
+    \tl_trim_spaces:N \l_septatrix_env_tl
+    % If the token list is empty, set it to the special novalue token list
+    \tl_if_empty:NT \l_septatrix_env_tl
+      { \tl_set_eq:NN \l_septatrix_env_tl \q_no_value }
+  }
+
+\NewDocumentCommand{\GetEnv}{ o m }
+  {
+    \__envar_getenv:n {#2}
+    \quark_if_no_value:NTF \l_septatrix_env_tl
+      { \tl_use:N #1 }
+      { \tl_use:N \l_septatrix_env_tl }
+  }
+
+%% This reads envar #3 and bind, if it is empty #2, else the result, to #1
+\NewDocumentCommand{\BindEnv}{ m o m }
+  {
+    \__envar_getenv:n {#3}
+    \quark_if_no_value:NTF \l_septatrix_env_tl
+      { \tl_if_novalue:nTF {#2}
+          {\tl_set_eq:NN #1 \c_empty_tl}
+          {\tl_set:Nn #1 {#2}}
+      }
+      { \tl_set_eq:NN #1 \l_septatrix_env_tl }
+  }
+
+\makeatother
+\ExplSyntaxOff

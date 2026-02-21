@@ -1,0 +1,87 @@
+\documentclass[10pt]{article}
+
+\usepackage{etoolbox}
+\usepackage{envar}
+
+\title{\texttt{envar} Package Example}
+\author{Yue Yao}
+\date{\today}
+
+\begin{document}
+
+\maketitle{}
+
+\section*{Overview}
+
+This document demonstrates the usage of the \texttt{envar} package.
+Include the declaration \verb|\usepackage{envar}| to define macros for accessing environment variables.
+
+\section*{Usage}
+
+The package provides the \verb|\GetEnv| and \verb|\BindEnv| commands.
+
+\subsection*{\texttt{\textbackslash GetEnv}: Direct Output}
+
+\begin{itemize}
+\item You can directly print the value of an environment variable like \texttt{HOME}. 
+\verb|\GetEnv{HOME}| will produce: 
+\texttt{\GetEnv{HOME}}.
+
+\item You can also provide a default value as an optional argument, in case the 
+variable is not set, or set to empty.
+
+\verb|\GetEnv[default]{NON_EXISTENT_VARIABLE}| produces: 
+\texttt{\GetEnv[default]{NON_EXISTENT_VARIABLE}}.
+
+\item If the environment variable is not set, and the default is omitted, it produces 
+a default value \texttt{\GetEnv{NON_EXISTENT_VARIABLE}}. Testing this value is tricky, however.
+Therefore, should the need arises, the user is recommended to use the \verb|\BindEnv| variant.
+\end{itemize}
+
+\subsection*{\texttt{\textbackslash BindEnv}: Storing the value}
+
+You can store the value of an environment variable in a macro for later use 
+with \verb|\BindEnv|. Here we store the value of \texttt{TEXMFDIST} in a new command 
+called \verb|\texmfdistpath|:
+%
+\begin{quotation}
+    \verb|\BindEnv{\texmfdistpath}{TEXMFDIST}|
+\end{quotation}
+
+\BindEnv{\texmfdistpath}{TEXMFDIST}
+
+Now we can reuse it: the value is \texttt{\texmfdistpath}.
+
+\begin{itemize}
+\item As with \verb|\GetEnv|, the command takes an optional argument of default value, in case 
+the environment variable is nonexistent:
+
+\verb|\BindEnv{\nonexistent}[default]{NON_EXISTENT_VARIABLE}|
+
+\BindEnv{\nonexistent}[default]{NON_EXISTENT_VARIABLE}
+
+Accessing \verb|\nonexistent| gives \texttt{\nonexistent}.
+
+\item If the environment variable is empty or not set, and the default argument is omitted
+
+\verb|\BindEnv{\another}{NON_EXISTENT_VARIABLE2}|
+
+\BindEnv{\another}{NON_EXISTENT_VARIABLE2}
+
+Then \verb|\another| is bound to the empty token list, which can be tested 
+with \verb|\ifdefempty| from \texttt{etoolbox} as follows:
+%
+\begin{verbatim}
+\ifdefempty{\another}{Argument is empty.}{Argument is not empty.}
+\end{verbatim}
+%
+Result: \texttt{\ifdefempty{\another}{Argument is empty.}{Argument is not empty.}}
+\end{itemize}
+
+
+% \verb|\BindEnv[]{\nonexistentWithDefault}{NON_EXISTENT_VARIABLE}|
+% \BindEnv[The variable is not set, so we use this default text.]{\nonexistentWithDefault}{NON_EXISTENT_VARIABLE}
+
+% Now we check it: \nonexistentWithDefault.
+
+\end{document}
