@@ -78,10 +78,51 @@ with \verb|\ifdefempty| from \texttt{etoolbox} as follows:
 Result: \texttt{\ifdefempty{\another}{Argument is empty.}{Argument is not empty.}}
 \end{itemize}
 
+\subsection*{Conveniences}
 
-% \verb|\BindEnv[]{\nonexistentWithDefault}{NON_EXISTENT_VARIABLE}|
-% \BindEnv[The variable is not set, so we use this default text.]{\nonexistentWithDefault}{NON_EXISTENT_VARIABLE}
+The package offers a few conveniences:
 
-% Now we check it: \nonexistentWithDefault.
+\begin{itemize}
+\item You can quickly check if an envar is defined (holds a non-empty value) by
+%
+\begin{verbatim}
+\EnvHasValueTF{HOME}{HOME has value}{impossible}
+\EnvHasValueTF{HOMER}{unlikely}{HOMER does not have value}
+\end{verbatim}
+%
+Results:
+\texttt{\EnvHasValueTF{HOME}{ HOME has value }{ impossible }} and
+\texttt{\EnvHasValueTF{HOMER}{ unlikely }{ HOMER does not have value }}.
+
+\item If you want to check if an envar is defined, and in the case that it is defined 
+work with the value, use \verb|\BindEnvHasValueTF|:
+
+\begin{verbatim}
+\BindEnvHasValueTF{\home}{HOME}
+{ Home has value: \home }
+{ You have no HOME? }
+\end{verbatim}
+
+Results: \texttt{%
+\BindEnvHasValueTF{\home}{HOME}
+{ Home has value: \home }
+{ You have no HOME? }
+}
+
+If the envar holds no value, then the macro holds an empty token list.
+
+\begin{verbatim}
+\BindEnvHasValueTF{\homer}{HOMER}
+{ Homer has value: \homer }
+{ \ifdefempty{\homer}{Empty}{NotEmpty} }
+\end{verbatim}
+
+Results: \texttt{%
+\BindEnvHasValueTF{\homer}{HOMER}
+{ Homer has value: \homer }
+{ \ifdefempty{\homer}{Empty}{NotEmpty} }
+}
+
+\end{itemize}
 
 \end{document}
