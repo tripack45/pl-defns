@@ -38,6 +38,12 @@
     { \use:n {#2} }
   }
 
+\NewDocumentCommand{\EnvHasValueT}{ m m }
+  { \EnvHasValueTF{#1}{#2}{} }
+  
+\NewDocumentCommand{\EnvHasValueF}{ m m }
+  { \EnvHasValueTF{#1}{}{#2}}
+
 %% This reads envar #3 and bind, if it is empty #2, else the result, to #1
 \NewDocumentCommand{\BindEnv}{ m o m }
   {
