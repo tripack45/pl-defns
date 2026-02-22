@@ -26,7 +26,7 @@
   {
     \__envar_getenv:n {#2}
     \quark_if_no_value:NTF \l_septatrix_env_tl
-      { \tl_use:N #1 }
+      { \use:n {#1} }
       { \tl_use:N \l_septatrix_env_tl }
   }
 
@@ -34,8 +34,8 @@
   {
     \__envar_getenv:n {#1}
     \quark_if_no_value:NTF \l_septatrix_env_tl 
-    { \tl_use:N #3 } 
-    { \tl_use:N #2 }
+    { \use:n {#3} } 
+    { \use:n {#2} }
   }
 
 %% This reads envar #3 and bind, if it is empty #2, else the result, to #1
@@ -55,9 +55,9 @@
     \__envar_getenv:n {#2}
     \quark_if_no_value:NTF \l_septatrix_env_tl
       { \tl_set_eq:NN #1 \c_empty_tl 
-        \tl_use:N #4 }
+        \use:n {#4} }
       { \tl_set_eq:NN #1 \l_septatrix_env_tl 
-        \tl_use:N #3 }
+        \use:n {#3} }
   }
 
 \makeatother
