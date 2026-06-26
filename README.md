@@ -62,7 +62,7 @@ For a LaTeX project whose project root is `$PROJECT_ROOT`:
 1. Copy `latexmkrc.project` to your project root.
 
 ```
-cp latexmkrc/latexmkrc.project >> $PROJECT_ROOT/latexmkrc
+cp latexmkrc/latexmkrc.project $PROJECT_ROOT/latexmkrc
 ```
 
 If you opted to set up globally, this is all you need to do.
