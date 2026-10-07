@@ -7,6 +7,7 @@
 \DeclareDocumentCommand{\send}{}{\Opn{send}}
 \DeclareDocumentCommand{\recv}{}{\Opn{recv}}
 \DeclareDocumentCommand{\eval}{}{\Opn{eval}}
+\DeclareDocumentCommand{\delay}{}{\Opn{delay}}
 \DeclareDocumentCommand{\EVALPAR}{}{\Opn{EVALPAR}}
 
 %% Timing Spec
@@ -65,13 +66,13 @@
 \DeclareDocumentCommand{\expevalstmt}{m m m}{\evalbstmt{#1}{#2}{#3}}
 \DeclareDocumentCommand{\evalparbstmt}{m m m m}{\at{#1}{#4}\mathop{\coloneq}\A@bt{\EVALPAR}({#2};{#3})}
 
-
 %% Send / Recv / Binding recv statements
 \DeclareDocumentCommand{\tsendSt}{m o m}{\IfNoValueTF{#2}{\when{#1}\A@bt{\send}[-](#3)}{\at{#1}\A@bt{\send}[#2](#3)}}
 \DeclareDocumentCommand{\trecvSt}{m o}{\IfNoValueTF{#2}{\when{#1}\A@bt{\recv}[-]}{\at{#1}\A@bt{\recv}[#2]}}
 \DeclareDocumentCommand{\trecvbSt}{m o m}{\IfNoValueTF{#2}{\when{#1}\,{#3}\mathop{\coloneq}\A@bt{\recv}[-]}{\at{#1}\,{#3}\mathop{\coloneq}\A@bt{\recv}[#2]}}
 
 \DeclareDocumentCommand{\tfwdSt}{m m}{\at{#1}\A@bt{\Opn{fwd}}[#2]}
+\DeclareDocumentCommand{\tdelaySt}{o m}{\IfNoValueTF{#1}{\A@bt{\delay}(#2)}{\at{#1}\A@bt{\delay}(#2)}}
 \DeclareDocumentCommand{\tspawnSt}{m m}{\at{#1}\A@bt{\Opn{spawn}}(#2)}
 \DeclareDocumentCommand{\tspawnbSt}{m m m}{\at{#1}\,{#3}\mathop{\coloneq}\A@bt{\Opn{spawn}}(#2)}
 %% Generic shape of procs
@@ -146,6 +147,11 @@
 \DeclareDocumentCommand{\tpspawnproccst}{ m m m m }{\at{#1}\, \bindChannel{#3}{\Opn{spawn}\parens{#2} \mathbin{;} #4}}
 \DeclareDocumentCommand{\tpspawnprocabt}{ m m m m }{\Opn{spawn}^{#1}{#2}\mathbin{;} {\Abs(#3){#4}}}
 \DeclareDocumentCommand{\tpSpawnProc}{s m m m m}{\IfBooleanTF{#1}{\tpspawnproccst{#2}{#3}{#4}{#5}}{\tpspawnprocabt{#2}{#3}{#4}{#5}}}
+
+%% Delay proc 
+\DeclareDocumentCommand{\tpdelayproccst}{ m m m }{\tdelaySt[#1]{#2}\mathbin{;}{#3}}
+\DeclareDocumentCommand{\tpdelayprocabt}{ m m m }{\tdelaySt[#1]{#2}\mathbin{;}{#3}}
+\DeclareDocumentCommand{\tpdelayProc}{s m m m}{\IfBooleanTF{#1}{\tpdelayproccst{#2}{#3}{#4}}{\tpdelayprocabt{#2}{#3}{#4}}}
 
 %% fInit
 \DeclareDocumentCommand{\finitabt}{ }{\Opn{init}}
