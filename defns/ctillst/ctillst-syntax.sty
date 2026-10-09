@@ -63,6 +63,8 @@
 \DeclareDocumentCommand{\recvbstmt}{m m}{{#2}\mathop{\coloneq}\A@bt{\recv}[#1]}
 \DeclareDocumentCommand{\evalstmt}{m m}{\at{#1}\A@bt{\eval}(#2)}
 \DeclareDocumentCommand{\evalbstmt}{m m m}{\at{#1}{#3}\mathop{\coloneq}\A@bt{\eval}(#2)}
+\DeclareDocumentCommand{\evalUntilstmt}{m m m}{\at{#1}\A@bt{\eval}({#2}, {#3})}
+\DeclareDocumentCommand{\evalUntilbstmt}{m m m m}{\at{#1}{#4}\mathop{\coloneq}\A@bt{\eval}({#2}, {#3})}
 \DeclareDocumentCommand{\expevalstmt}{m m m}{\evalbstmt{#1}{#2}{#3}}
 \DeclareDocumentCommand{\evalparbstmt}{m m m m}{\at{#1}{#4}\mathop{\coloneq}\A@bt{\EVALPAR}({#2};{#3})}
 
@@ -136,6 +138,11 @@
 \DeclareDocumentCommand{\tpevalcst}{ m m m m }{\at{#2}\, \bindValue{#3}{\Opn{eval}\parens{#1}\mathbin{;} #4}}
 \DeclareDocumentCommand{\tpevalabt}{ m m m m }{\Opn{eval}^{#2}\parens{#1} \mathbin{;} \Abs(#3){#4}}
 \DeclareDocumentCommand{\tpEvalProc}{s m m m m}{\IfBooleanTF{#1}{\tpevalcst{#2}{#3}{#4}{#5}}{\tpevalabt{#2}{#3}{#4}{#5}}}
+
+% eval-until process
+\DeclareDocumentCommand{\tpevaluntilcst}{m m m m m}{\at{#2}\, \bindValue{#4}{\Opn{eval}\parens{{#1}}\,\Opn{until}\,{{#3}}\mathbin{;} {#5}}}
+\DeclareDocumentCommand{\tpevaluntilabt}{m m m m m}{\Opn{eval}^{#2}\parens{{#1},{#3}} \mathbin{;} \Abs(#4){#5}}
+\DeclareDocumentCommand{\tpEvalUntilProc}{s m m m m m}{\IfBooleanTF{#1}{\tpevaluntilcst{#2}{#3}{#4}{#5}{#6}}{\tpevaluntilabt{#2}{#3}{#4}{#5}{#6}}}
 
 %% binding
 \DeclareDocumentCommand{\bindValue}{m m}{{#1} \coloneqq #2}
