@@ -7,8 +7,12 @@
 \DeclareDocumentCommand{\send}{}{\Opn{send}}
 \DeclareDocumentCommand{\recv}{}{\Opn{recv}}
 \DeclareDocumentCommand{\eval}{}{\Opn{eval}}
+\DeclareDocumentCommand{\spawn}{}{\Opn{spawn}}
+\DeclareDocumentCommand{\by}{}{\Opn{by}}
 \DeclareDocumentCommand{\delay}{}{\Opn{delay}}
 \DeclareDocumentCommand{\EVALPAR}{}{\Opn{EVALPAR}}
+\DeclareDocumentCommand{\BY}{}{\Opn{by}}
+\DeclareDocumentCommand{\offerCh}{}{\Opn{-}}
 
 %% Timing Spec
 \DeclareDocumentCommand{\when}{m}{\Opn{?}\minor@bracks{#1}\,}
@@ -21,82 +25,81 @@
 \DeclareDocumentCommand{\valMsg}{m}{\Opn{val}\parens{#1}}
 \DeclareDocumentCommand{\chanMsg}{m}{\{#1\}}
 
-% Send / Recv Skeletons
-\DeclareDocumentCommand{\sndInt}{m}{\A@bt{\send}[\Opn{-}](#1)}
-\DeclareDocumentCommand{\rcvInt}{}{\A@bt{\recv}[\Opn{-}]}
-\DeclareDocumentCommand{\sndCli}{m m}{\A@bt{\send}[#1](#2)}
-\DeclareDocumentCommand{\rcvCli}{m}{\A@bt{\recv}[#1]}
+% Send / Recv with an optional second argument for channels
+\DeclareDocumentCommand{\commOp@}{m m}{%
+\IfNoValueTF{#2}%
+{\A@bt{#1}[\offerCh]}%   Offering channel
+{\A@bt{#1}[#2]}%        Client channel
+}
 
 % Send / Recv timed ops
 \DeclareDocumentCommand{\tCommOp@}{m m m}{%
 \IfNoValueTF{#3}%
-{\when{#2}\A@bt{#1}[\Opn{-}]}% Offering channel
-{\at{#2}\A@bt{#1}[#3]}% Client channel
+{\when{#2}\commOp@{#1}{#3}}% Offering channel
+{\at{#2}\commOp@{#1}{#3}}% Client channel
 }
+
+%% Send and receive action with a channel parameter
+%% send[-] send[x]
+%% recv[-] recv[x]
+\DeclareDocumentCommand{\sendOp}{o}{\commOp@{\send}{#1}}
+\DeclareDocumentCommand{\recvOp}{o}{\commOp@{\recv}{#1}}
+
 \DeclareDocumentCommand{\tsend}{m o}{\tCommOp@{\send}{#1}{#2}}
 \DeclareDocumentCommand{\trecv}{m o}{\tCommOp@{\recv}{#1}{#2}}
 
-% Send / Recv Full
-\DeclareDocumentCommand{\tpSndInt}{m m o}{\when{#1}\, \sndInt{#2} \IfNoValueF{#3}{\mathbin{;} #3}}
-\DeclareDocumentCommand{\tpRcvInt}{m o}{\when{#1}\, \rcvInt \IfNoValueF{#2}{\mathbin{;} #2}}
-\DeclareDocumentCommand{\tpSndCli}{m m m o}{\at{#1}\, \sndCli{#2}{#3} \IfNoValueF{#4}{\mathbin{;} #4}}
-\DeclareDocumentCommand{\tpRcvCli}{m m o}{\at{#1}\, \rcvCli{#2} \IfNoValueF{#3}{\mathbin{;} #3}}
+%% Statements
+%%   Statements are either with a binder or without a binder
+%%   -stmt does not have binders, they look like 
+%%         \sendstmt{x}{y}   -- send[x](y)
+%%         \recvstmt{x}{y}   -- recv[x]
+%%         \spawnstmt{P}     -- spawn{P}
+%%   -bstmt comes with binder, they look like
+%%         \recvbstmt{a}{x}  -- x := recv[a]
+%%         \spawnbstmt{P}{y} -- y := spawn{P}
+%%   Statements themselves should NOT carry timing information
+\DeclareDocumentCommand{\bind@}{m m}{{#2}\mathop{\coloneq}{#1}}
+\DeclareDocumentCommand{\delaystmt}{m}{\A@bt{\delay}(#1)}
+\DeclareDocumentCommand{\sendstmt}{m m}{\A@bt{\sendOp[#1]}(#2)}
+\DeclareDocumentCommand{\recvstmt}{m}{\recvOp[#1]}
+\DeclareDocumentCommand{\recvbstmt}{m m}{\bind@{\recvstmt{#1}}{#2}}
+\DeclareDocumentCommand{\evalBystmt}{m m}{\A@bt{\eval}(#1)\,\A@bt{\by}(#2)}
+\DeclareDocumentCommand{\evalBybstmt}{m m m}{\bind@{\evalBystmt{#1}{#2}}{#3}}
+\DeclareDocumentCommand{\spawnstmt}{m}{\A@bt{\spawn}(#1)}
+\DeclareDocumentCommand{\spawnbstmt}{m m}{\bind@{\spawnstmt{#1}}{#2}}
+%% Timed statements, e.g.
+%% \tsendrSt  -- Timed Send to right (provider, right rule)
+%% \sendlSt   -- Send to left  (client, left rule)
+%% \trecvrSt  -- Timed to recv from right (provider, right rule)
+%% \recvlSt   -- Send to left (provider, left rule)
+\DeclareDocumentCommand{\tsendrstmt}{m m}{\when{#1}\sendstmt{\offerCh}{#2}}
+\DeclareDocumentCommand{\sendlstmt}{m m}{\sendstmt{#1}{#2}}
+\DeclareDocumentCommand{\trecvrbstmt}{m m}{\when{#1}\recvbstmt{\offerCh}{#2}}
+\DeclareDocumentCommand{\recvlbstmt}{m m}{\recvbstmt{#1}{#2}}
 
-%% Follow-ups 
-\DeclareDocumentCommand{\subProc}{m m}{\major@bracks{#1};{#2}}
-\DeclareDocumentCommand{\leftSubP}{m}{\subProc{\leftMsg}{#1}}
-\DeclareDocumentCommand{\rightSubP}{m}{\subProc{\rightMsg}{#1}}
-\DeclareDocumentCommand{\hoSubP}{m m}{\subProc{\chanMsg{#1}}{#2}}
-\DeclareDocumentCommand{\valSubP}{m m}{\contArm{\valMsg{#1}}{#2}}
-\DeclareDocumentCommand{\clsSubP}{}{\major@bracks{\clsMsg}}
-
-%% Continuations
-\DeclareDocumentCommand{\contArm}{m m}{\sing@map{#1}{#2}}
-\DeclareDocumentCommand{\clsCont}{m}{\contArm{\clsMsg}{#1}}
-\DeclareDocumentCommand{\caseCont}{m m}{\{\contArm{\leftMsg}{#1}\mathbin{|}\contArm{\rightMsg}{#2}\}}
-\DeclareDocumentCommand{\chanCont}{m m}{\contArm{\chanMsg{#1}}{#2}}
-\DeclareDocumentCommand{\valCont}{m m}{\contArm{\valMsg{#1}}{#2}}
-
-%% Prefixes
-\DeclareDocumentCommand{\sendstmt}{m m}{\A@bt{\send}[#1](#2)}
-\DeclareDocumentCommand{\recvstmt}{m}{\A@bt{\recv}[#1]}
-\DeclareDocumentCommand{\recvbstmt}{m m}{{#2}\mathop{\coloneq}\A@bt{\recv}[#1]}
-\DeclareDocumentCommand{\evalstmt}{m m}{\at{#1}\A@bt{\eval}(#2)}
-\DeclareDocumentCommand{\evalbstmt}{m m m}{\at{#1}{#3}\mathop{\coloneq}\A@bt{\eval}(#2)}
-\DeclareDocumentCommand{\evalUntilstmt}{m m m}{\at{#1}\A@bt{\eval}({#2}, {#3})}
-\DeclareDocumentCommand{\evalUntilbstmt}{m m m m}{\at{#1}{#4}\mathop{\coloneq}\A@bt{\eval}({#2}, {#3})}
-\DeclareDocumentCommand{\expevalstmt}{m m m}{\evalbstmt{#1}{#2}{#3}}
-\DeclareDocumentCommand{\evalparbstmt}{m m m m}{\at{#1}{#4}\mathop{\coloneq}\A@bt{\EVALPAR}({#2};{#3})}
-
-%% Send / Recv / Binding recv statements
-\DeclareDocumentCommand{\tsendSt}{m o m}{\IfNoValueTF{#2}{\when{#1}\A@bt{\send}[-](#3)}{\at{#1}\A@bt{\send}[#2](#3)}}
-\DeclareDocumentCommand{\trecvSt}{m o}{\IfNoValueTF{#2}{\when{#1}\A@bt{\recv}[-]}{\at{#1}\A@bt{\recv}[#2]}}
-\DeclareDocumentCommand{\trecvbSt}{m o m}{\IfNoValueTF{#2}{\when{#1}\,{#3}\mathop{\coloneq}\A@bt{\recv}[-]}{\at{#1}\,{#3}\mathop{\coloneq}\A@bt{\recv}[#2]}}
-
-\DeclareDocumentCommand{\tfwdSt}{m m}{\at{#1}\A@bt{\Opn{fwd}}[#2]}
-\DeclareDocumentCommand{\tdelaySt}{o m}{\IfNoValueTF{#1}{\A@bt{\delay}(#2)}{\at{#1}\A@bt{\delay}(#2)}}
-\DeclareDocumentCommand{\tspawnSt}{m m}{\at{#1}\A@bt{\Opn{spawn}}(#2)}
-\DeclareDocumentCommand{\tspawnbSt}{m m m}{\at{#1}\,{#3}\mathop{\coloneq}\A@bt{\Opn{spawn}}(#2)}
-%% Generic shape of procs
-
-%% The first optional argument is channel name. 
-%% When left out it is taken to be the offering channel
-\DeclareDocumentCommand{\tsendP}{s m o m m}{\tsendSt{#2}[#3]{#4}\mathbin{;}{#5}}
-\DeclareDocumentCommand{\trecvP}{s m o m}{\trecvSt{#2}[#3]\mathbin{;}{#4}}
-\DeclareDocumentCommand{\trecvbP}{s m o m m}{\trecvbSt{#2}[#3]{#4}\mathbin{;}{#5}}
+%% Full Process terms, i.e. statements with continuations
+\DeclareDocumentCommand{\stmtProc@}{m m}{{#1}\mathbin{;}{#2}}
+\DeclareDocumentCommand{\tsendrClsProc}{m}{\tsendrstmt{#1}{\clsMsg}}
+\DeclareDocumentCommand{\tsendrProc}{m m m}{\stmtProc@{\tsendrstmt{#1}{#2}}{#3}}
+\DeclareDocumentCommand{\sendlProc}{m m m}{\stmtProc@{\sendstmt{#1}{#2}}{#3}}
+\DeclareDocumentCommand{\trecvrProc}{m m m}{\stmtProc@{\trecvrbstmt{#1}{#2}}{#3}}
+\DeclareDocumentCommand{\recvlProc}{m m m}{\stmtProc@{\recvbstmt{#1}{#2}}{#3}}
+\DeclareDocumentCommand{\evalByProc}{m m m m}{\stmtProc@{\evalBybstmt{#1}{#2}{#3}}{#4}}
+\DeclareDocumentCommand{\spawnProc}{m m m}{\stmtProc@{\spawnbstmt{#1}{#2}}{#3}}
+\DeclareDocumentCommand{\delayProc}{m m}{\stmtProc@{\delaystmt{#1}}{#2}}
 
 \DeclareDocumentCommand{\tfwdP}{s m m}{\tfwdSt{#2}{#3}}
 \DeclareDocumentCommand{\tspawnP}{s m m m m}{\tspawnbSt{#2}{#3}{#4}\mathbin{;}{#5}}
 \DeclareDocumentCommand{\tevalbP}{s m m m m}{\evalbstmt{#2}{#3}{#4}\mathbin{;}{#5}}
 \DeclareDocumentCommand{\tevalparbP}{s m m m m m}{\evalparbstmt{#2}{#3}{#4}{#5}\mathbin{;}{#6}}
-\DeclareDocumentCommand{\evalStack}{m m}{\overline{\Abs(#1){#2}}}
-\DeclareDocumentCommand{\evalStackCont}{m m m}{\evalStack{#1}{#2}\mathbin{;}{#3}}
 
 %% Operation Semantics
 \DeclareDocumentCommand{\actsnd}{m m}{{#1}\mathbin{!}{#2}}
 \DeclareDocumentCommand{\actrcv}{m m}{{#1}\mathbin{?}{#2}}
 \DeclareDocumentCommand{\actsil}{}{\varepsilon}
 
+\DeclareDocumentCommand{\evalStack}{m m}{\overline{\Abs(#1){#2}}}
+\DeclareDocumentCommand{\evalStackCont}{m m m}{\evalStack{#1}{#2}\mathbin{;}{#3}}
 
 \DeclareDocumentCommand{\ConfSort}{}{\sort{Conf}}
 \DeclareDocumentCommand{\EventSort}{}{\sort{Event}}
@@ -119,6 +122,7 @@
 
 \DeclareDocumentCommand{\RunProcAbt}{ m m o }{\Abt{\Opn{proc}\sqbracks{#1}\IfNoValueF{#3}{\{{#3}\}}}\parens{#2}}
 \DeclareDocumentCommand{\RunProc}{ m m o }{\IfNoValueTF{#3}{\RunProcAbt{#1}{#2}}{\RunProcAbt{#1}{#2}[#3]}}
+\DeclareDocumentCommand{\RunProcT}{ m m m o }{\Abt{\Opn{proc}\sqbracks{#1}\mathop{@}{#2}\IfNoValueF{#4}{\{{#4}\}}}\parens{#3}}
 
 \DeclareDocumentCommand{\FwdProc}{ m m }{\Abt{\Opn{fwd}\sqbracks{#1}}\parens{#2}}
 \DeclareDocumentCommand{\StopConf}{s}{\IfBooleanTF{#1}{\mathop{\mathbf{1}}}{\Opn{Stop}}}
@@ -139,14 +143,14 @@
 \DeclareDocumentCommand{\tpevalabt}{ m m m m }{\Opn{eval}^{#2}\parens{#1} \mathbin{;} \Abs(#3){#4}}
 \DeclareDocumentCommand{\tpEvalProc}{s m m m m}{\IfBooleanTF{#1}{\tpevalcst{#2}{#3}{#4}{#5}}{\tpevalabt{#2}{#3}{#4}{#5}}}
 
-% eval-until process
-\DeclareDocumentCommand{\tpevaluntilcst}{m m m m m}{\at{#2}\, \bindValue{#4}{\Opn{eval}\parens{{#1}}\,\Opn{until}\,{{#3}}\mathbin{;} {#5}}}
-\DeclareDocumentCommand{\tpevaluntilabt}{m m m m m}{\Opn{eval}^{#2}\parens{{#1},{#3}} \mathbin{;} \Abs(#4){#5}}
-\DeclareDocumentCommand{\tpEvalUntilProc}{s m m m m m}{\IfBooleanTF{#1}{\tpevaluntilcst{#2}{#3}{#4}{#5}{#6}}{\tpevaluntilabt{#2}{#3}{#4}{#5}{#6}}}
+% eval-by process
+\DeclareDocumentCommand{\tpevalbycst}{m m m m m}{\bindValue{#4}{\Opn{eval}\parens{{#1}}\,\Opn{by}\,{{#3}}\mathbin{;} {#5}}}
+\DeclareDocumentCommand{\tpevalbyabt}{m m m m m}{\Opn{eval}{#2}\parens{{#1},{#3}} \mathbin{;} \Abs(#4){#5}}
+\DeclareDocumentCommand{\tpEvalByProc}{s m m m m m}{\IfBooleanTF{#1}{\tpevalbycst{#2}{#3}{#4}{#5}{#6}}{\tpevalbyabt{#2}{#3}{#4}{#5}{#6}}}
 
 %% binding
 \DeclareDocumentCommand{\bindValue}{m m}{{#1} \coloneqq #2}
-\DeclareDocumentCommand{\bindClose}{m}{\Opn{cls} \coloneqq #1}
+%\DeclareDocumentCommand{\bindClose}{m}{\Opn{cls} \coloneqq #1}
 \DeclareDocumentCommand{\bindChannel}{m m}{#1 \coloneqq #2}
 \DeclareDocumentCommand{\bindSeq}{m m m}{(#1 \sep #2) \coloneqq #3}
 
@@ -154,11 +158,6 @@
 \DeclareDocumentCommand{\tpspawnproccst}{ m m m m }{\at{#1}\, \bindChannel{#3}{\Opn{spawn}\parens{#2} \mathbin{;} #4}}
 \DeclareDocumentCommand{\tpspawnprocabt}{ m m m m }{\Opn{spawn}^{#1}{#2}\mathbin{;} {\Abs(#3){#4}}}
 \DeclareDocumentCommand{\tpSpawnProc}{s m m m m}{\IfBooleanTF{#1}{\tpspawnproccst{#2}{#3}{#4}{#5}}{\tpspawnprocabt{#2}{#3}{#4}{#5}}}
-
-%% Delay proc 
-\DeclareDocumentCommand{\tpdelayproccst}{ m m m }{\tdelaySt[#1]{#2}\mathbin{;}{#3}}
-\DeclareDocumentCommand{\tpdelayprocabt}{ m m m }{\tdelaySt[#1]{#2}\mathbin{;}{#3}}
-\DeclareDocumentCommand{\tpdelayProc}{s m m m}{\IfBooleanTF{#1}{\tpdelayproccst{#2}{#3}{#4}}{\tpdelayprocabt{#2}{#3}{#4}}}
 
 %% fInit
 \DeclareDocumentCommand{\finitabt}{ }{\Opn{init}}
@@ -173,6 +172,63 @@
 \DeclareDocumentCommand{\tpfwdabt}{ m m }{\Opn{fwd}^{#1}{#2}}
 \DeclareDocumentCommand{\tpfwdcst}{ m m }{\at{#1}\, \Opn{fwd}\parens{#2}}
 \DeclareDocumentCommand{\tpFwd}{s m m}{\IfBooleanTF{#1}{\tpfwdcst{#2}{#3}}{\tpfwdabt{#2}{#3}}}
+
+
+%% Macros defined for compatibility
+
+% Send / Recv Skeletons
+\DeclareDocumentCommand{\sndInt}{m}{\A@bt{\sendOp}(#1)}
+\DeclareDocumentCommand{\rcvInt}{}{\A@bt{\recvOp}}
+\DeclareDocumentCommand{\sndCli}{m m}{\A@bt{\sendOp{#1}}(#2)}
+\DeclareDocumentCommand{\rcvCli}{m}{\A@bt{\recvOp{#1}}}
+
+% Send / Recv Full
+\DeclareDocumentCommand{\tpSndInt}{m m o}{\when{#1}\, \sndInt{#2} \IfNoValueF{#3}{\mathbin{;} #3}}
+\DeclareDocumentCommand{\tpRcvInt}{m o}{\when{#1}\, \rcvInt \IfNoValueF{#2}{\mathbin{;} #2}}
+\DeclareDocumentCommand{\tpSndCli}{m m m o}{\at{#1}\, \sndCli{#2}{#3} \IfNoValueF{#4}{\mathbin{;} #4}}
+\DeclareDocumentCommand{\tpRcvCli}{m m o}{\at{#1}\, \rcvCli{#2} \IfNoValueF{#3}{\mathbin{;} #3}}
+
+% Follow-ups 
+\DeclareDocumentCommand{\subProc}{m m}{\major@bracks{#1}\mathbin{;}{#2}}
+\DeclareDocumentCommand{\leftSubP}{m}{\subProc{\leftMsg}{#1}}
+\DeclareDocumentCommand{\rightSubP}{m}{\subProc{\rightMsg}{#1}}
+\DeclareDocumentCommand{\hoSubP}{m m}{\subProc{\chanMsg{#1}}{#2}}
+\DeclareDocumentCommand{\valSubP}{m m}{\contArm{\valMsg{#1}}{#2}}
+\DeclareDocumentCommand{\clsSubP}{}{\major@bracks{\clsMsg}}
+
+% %% Continuations
+\DeclareDocumentCommand{\contArm}{m m}{\sing@map{#1}{#2}}
+\DeclareDocumentCommand{\clsCont}{m}{\contArm{\clsMsg}{#1}}
+\DeclareDocumentCommand{\caseCont}{m m}{\{\contArm{\leftMsg}{#1}\mathbin{|}\contArm{\rightMsg}{#2}\}}
+\DeclareDocumentCommand{\chanCont}{m m}{\contArm{\chanMsg{#1}}{#2}}
+\DeclareDocumentCommand{\valCont}{m m}{\contArm{\valMsg{#1}}{#2}}
+
+%% Statements
+\DeclareDocumentCommand{\evalstmt}{m m}{\at{#1}\A@bt{\eval}(#2)}
+\DeclareDocumentCommand{\evalbstmt}{m m m}{\at{#1}{#3}\mathop{\coloneq}\A@bt{\eval}(#2)}
+\DeclareDocumentCommand{\expevalstmt}{m m m}{\evalbstmt{#1}{#2}{#3}}
+\DeclareDocumentCommand{\evalparbstmt}{m m m m}{\at{#1}{#4}\mathop{\coloneq}\A@bt{\EVALPAR}({#2};{#3})}
+
+%% Timed Send / Recv / Binding recv statements
+\DeclareDocumentCommand{\tsendSt}{m o m}{\IfNoValueTF{#2}{\when{#1}\A@bt{\send}[-](#3)}{\at{#1}\A@bt{\send}[#2](#3)}}
+\DeclareDocumentCommand{\trecvSt}{m o}{\IfNoValueTF{#2}{\when{#1}\A@bt{\recv}[-]}{\at{#1}\A@bt{\recv}[#2]}}
+\DeclareDocumentCommand{\trecvbSt}{m o m}{\IfNoValueTF{#2}{\when{#1}\,{#3}\mathop{\coloneq}\A@bt{\recv}[-]}{\at{#1}\,{#3}\mathop{\coloneq}\A@bt{\recv}[#2]}}
+\DeclareDocumentCommand{\tfwdSt}{m m}{\at{#1}\A@bt{\Opn{fwd}}[#2]}
+\DeclareDocumentCommand{\tspawnSt}{m m}{\at{#1}\spawnstmt{#2}}
+\DeclareDocumentCommand{\tspawnbSt}{m m m}{\at{#1}\spawnbstmt{#2}{#3}}
+
+%% Generic shape of procs
+
+%% The first optional argument is channel name. 
+%% When left out it is taken to be the offering channel
+\DeclareDocumentCommand{\tsendP}{s m o m m}{\tsendSt{#2}[#3]{#4}\mathbin{;}{#5}}
+\DeclareDocumentCommand{\trecvP}{s m o m}{\trecvSt{#2}[#3]\mathbin{;}{#4}}
+\DeclareDocumentCommand{\trecvbP}{s m o m m}{\trecvbSt{#2}[#3]{#4}\mathbin{;}{#5}}
+
+\DeclareDocumentCommand{\tfwdP}{s m m}{\tfwdSt{#2}{#3}}
+\DeclareDocumentCommand{\tspawnP}{s m m m m}{\tspawnbSt{#2}{#3}{#4}\mathbin{;}{#5}}
+\DeclareDocumentCommand{\tevalbP}{s m m m m}{\evalbstmt{#2}{#3}{#4}\mathbin{;}{#5}}
+\DeclareDocumentCommand{\tevalparbP}{s m m m m m}{\evalparbstmt{#2}{#3}{#4}{#5}\mathbin{;}{#6}}
 
 \makeatother
 
