@@ -122,7 +122,7 @@
 
 \DeclareDocumentCommand{\RunProcAbt}{ m m o }{\Abt{\Opn{proc}\sqbracks{#1}\IfNoValueF{#3}{\{{#3}\}}}\parens{#2}}
 \DeclareDocumentCommand{\RunProc}{ m m o }{\IfNoValueTF{#3}{\RunProcAbt{#1}{#2}}{\RunProcAbt{#1}{#2}[#3]}}
-\DeclareDocumentCommand{\RunProcT}{ m m m o }{\Abt{\Opn{proc}\sqbracks{#1}\mathop{@}{#2}\IfNoValueF{#4}{\{{#4}\}}}\parens{#3}}
+\DeclareDocumentCommand{\RunProcT}{ m m m o }{\Abt{\Opn{proc}\sqbracks{{#1}\mathop{@}{#2}}\IfNoValueF{#4}{\{{#4}\}}}\parens{#3}}
 
 \DeclareDocumentCommand{\FwdProc}{ m m }{\Abt{\Opn{fwd}\sqbracks{#1}}\parens{#2}}
 \DeclareDocumentCommand{\StopConf}{s}{\IfBooleanTF{#1}{\mathop{\mathbf{1}}}{\Opn{Stop}}}
@@ -144,7 +144,7 @@
 \DeclareDocumentCommand{\tpEvalProc}{s m m m m}{\IfBooleanTF{#1}{\tpevalcst{#2}{#3}{#4}{#5}}{\tpevalabt{#2}{#3}{#4}{#5}}}
 
 % eval-by process
-\DeclareDocumentCommand{\tpevalbycst}{m m m m m}{\bindValue{#4}{\Opn{eval}\parens{{#1}}\,\Opn{by}\,{{#3}}\mathbin{;} {#5}}}
+\DeclareDocumentCommand{\tpevalbycst}{m m m m m}{\bindValue{#4}{\Opn{eval}\parens{{#1}}\Opn{by}{{#3}}\mathbin{;} {#5}}}
 \DeclareDocumentCommand{\tpevalbyabt}{m m m m m}{\Opn{eval}{#2}\parens{{#1},{#3}} \mathbin{;} \Abs(#4){#5}}
 \DeclareDocumentCommand{\tpEvalByProc}{s m m m m m}{\IfBooleanTF{#1}{\tpevalbycst{#2}{#3}{#4}{#5}{#6}}{\tpevalbyabt{#2}{#3}{#4}{#5}{#6}}}
 
@@ -215,7 +215,7 @@
 \DeclareDocumentCommand{\trecvbSt}{m o m}{\IfNoValueTF{#2}{\when{#1}\,{#3}\mathop{\coloneq}\A@bt{\recv}[-]}{\at{#1}\,{#3}\mathop{\coloneq}\A@bt{\recv}[#2]}}
 \DeclareDocumentCommand{\tfwdSt}{m m}{\at{#1}\A@bt{\Opn{fwd}}[#2]}
 \DeclareDocumentCommand{\tspawnSt}{m m}{\at{#1}\spawnstmt{#2}}
-\DeclareDocumentCommand{\tspawnbSt}{m m m}{\at{#1}\spawnbstmt{#2}{#3}}
+\DeclareDocumentCommand{\tspawnbSt}{m m m}{\at{#1}\spawnbstmt{#2}{#3}
 
 %% Generic shape of procs
 
