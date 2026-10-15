@@ -63,7 +63,7 @@
 \DeclareDocumentCommand{\sendstmt}{m m}{\A@bt{\sendOp[#1]}(#2)}
 \DeclareDocumentCommand{\recvstmt}{m}{\recvOp[#1]}
 \DeclareDocumentCommand{\recvbstmt}{m m}{\bind@{\recvstmt{#1}}{#2}}
-\DeclareDocumentCommand{\evalBystmt}{m m}{\A@bt{\eval}(#1)\,\A@bt{\by}(#2)}
+\DeclareDocumentCommand{\evalBystmt}{m m}{\A@bt{\eval}(#1)\A@bt{\by}(#2)}
 \DeclareDocumentCommand{\evalBybstmt}{m m m}{\bind@{\evalBystmt{#1}{#2}}{#3}}
 \DeclareDocumentCommand{\spawnstmt}{m}{\A@bt{\spawn}(#1)}
 \DeclareDocumentCommand{\spawnbstmt}{m m}{\bind@{\spawnstmt{#1}}{#2}}
@@ -144,7 +144,7 @@
 \DeclareDocumentCommand{\tpEvalProc}{s m m m m}{\IfBooleanTF{#1}{\tpevalcst{#2}{#3}{#4}{#5}}{\tpevalabt{#2}{#3}{#4}{#5}}}
 
 % eval-by process
-\DeclareDocumentCommand{\tpevalbycst}{m m m m m}{\bindValue{#4}{\Opn{eval}\parens{{#1}}\,\Opn{by}\,{{#3}}\mathbin{;} {#5}}}
+\DeclareDocumentCommand{\tpevalbycst}{m m m m m}{\bindValue{#4}{\Opn{eval}\parens{{#1}}\Opn{by}{{#3}}\mathbin{;} {#5}}}
 \DeclareDocumentCommand{\tpevalbyabt}{m m m m m}{\Opn{eval}{#2}\parens{{#1},{#3}} \mathbin{;} \Abs(#4){#5}}
 \DeclareDocumentCommand{\tpEvalByProc}{s m m m m m}{\IfBooleanTF{#1}{\tpevalbycst{#2}{#3}{#4}{#5}{#6}}{\tpevalbyabt{#2}{#3}{#4}{#5}{#6}}}
 
